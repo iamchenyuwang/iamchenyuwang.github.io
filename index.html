@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chenyu Wang - Personal Website</title>
+    <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <h2>Chenyu Wang</h2>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="publications.html">Publications</a></li>
+                <li><a href="blog.html">Blog</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-text">
+                        <h1><span class="highlight">Chenyu Wang</span></h1>
+                        <p class="bio">
+                            I am a researcher at Harvard University. I work on AI and systems, and am envisioning Autonomous AI agents for system engineering.
+                        </p>
+                        <p class="bio">
+                            This semester, I'm Course Staff for <a href="https://harvard-edge.github.io/cs249r_fall2025/" target="_blank" style="color: #2563eb; text-decoration: underline; font-weight: 600;">CS249r: Agentic AI for Computer Systems Design</a> with Professor Vijay Janapa Reddi.
+                        </p>
+                        <p class="bio">
+                            If you want to find my CV, it's <a href="assets/cv.pdf" target="_blank" style="color: #2563eb; text-decoration: underline; font-weight: 600;">here</a>.
+                        </p>
+                        <div class="social-links">
+                            <a href="https://scholar.google.com/citations?user=QI96hfoAAAAJ&hl=en" target="_blank" aria-label="Google Scholar">
+                                <i class="fas fa-graduation-cap"></i>
+                            </a>
+                            <a href="assets/cv.pdf" target="_blank" aria-label="CV">
+                                <i class="fas fa-file-pdf"></i>
+                            </a>
+                            <a href="mailto:chenyu_wang@seas.harvard.edu" aria-label="Email">
+                                <i class="fas fa-envelope"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="hero-image">
+                        <img src="assets/images/huggingleg.png" alt="Chenyu Wang" class="profile-img">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="research-interests">
+            <div class="container">
+                <h2 class="section-title">Research Interests</h2>
+                <div class="interests-grid">
+                    <div class="interest-card">
+                        <div class="icon-wrapper">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h3>Artificial Intelligence</h3>
+                    </div>
+                    <div class="interest-card">
+                        <div class="icon-wrapper">
+                            <i class="fas fa-microchip"></i>
+                        </div>
+                        <h3>Computer Architecture</h3>
+                    </div>
+                    <div class="interest-card">
+                        <div class="icon-wrapper">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <h3>AI for System</h3>
+                        <p style="font-size: 0.9rem; margin-top: 0.5rem;">
+                            <a href="https://ieeexplore.ieee.org/document/10247808" target="_blank" style="color: #2563eb; text-decoration: underline;">My Professor's Vision</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="recent-work">
+            <div class="container">
+                <h2 class="section-title">Recent Works</h2>
+                <div class="work-preview">
+                    <div class="work-item">
+                        <h3>SLM-MUX: Orchestrating Small Language Models for Reasoning</h3>
+                        <p class="work-meta"><strong>C Wang*</strong>, Z Wan*, H Kang, E Chen, Z Xie, T Krishna, V Janapa Reddi, Y Du</p>
+                        <p class="work-meta">Harvard University, Georgia Tech, Stanford University, 2025</p>
+                        <p>A multi-model architecture that effectively coordinates multiple small language models, achieving up to 13.4% improvement on MATH and outperforming Qwen 2.5 72B with just two SLMs.</p>
+                        <div class="pub-links" style="margin-top: 0.5rem;">
+                            <a href="https://slm-mux.github.io/" target="_blank" class="pub-link" style="display: inline-block; color: #2563eb; text-decoration: none; font-weight: 500;">
+                                <i class="fas fa-globe"></i> Project Page
+                            </a>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <h3>EPIM: Efficient Processing-In-Memory Accelerators based on Epitome</h3>
+                        <p class="work-meta"><strong>C Wang</strong>, Z Dong, D Zhou, Z Zhu, Y Wang, J Feng, K Keutzer</p>
+                        <p class="work-meta">Design Automation Conference (DAC), 2024 • <strong>3 citations</strong></p>
+                        <p>Developed a novel processing-in-memory architecture for efficient neural network acceleration, demonstrating significant improvements in energy efficiency and throughput.</p>
+                    </div>
+                    <div class="work-item">
+                        <h3>Evaluating Zero-Shot Long-Context LLM Compression</h3>
+                        <p class="work-meta"><strong>C Wang</strong>, Y Wang, K Li</p>
+                        <p class="work-meta">arXiv preprint, 2024 • <strong>1 citation</strong></p>
+                        <p>Comprehensive evaluation of compression techniques for large language models with extended context windows, addressing practical deployment challenges.</p>
+                    </div>
+                    <div class="work-item">
+                        <h3>Gibbon: Efficient co-exploration of NN model and processing-in-memory architecture</h3>
+                        <p class="work-meta">H Sun, <strong>C Wang</strong>, Z Zhu, X Ning, G Dai, H Yang, Y Wang</p>
+                        <p class="work-meta">Design, Automation & Test in Europe Conference (DATE), 2022 • <strong>20 citations</strong></p>
+                        <p>Designed an efficient co-exploration framework for jointly optimizing neural network models and processing-in-memory architectures, achieving state-of-the-art performance.</p>
+                    </div>
+                </div>
+                <div class="cta-container">
+                    <a href="publications.html" class="btn-primary">View All Publications</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Chenyu Wang. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
