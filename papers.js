@@ -12,6 +12,10 @@
     const START_YEAR = 2018;
     const START_MONTH = 1; // 1-12
 
+    // Pagination
+    let currentPage = 1;
+    const PAGE_SIZE = 20;
+
     // Elements
     const searchInput = document.getElementById('paper-search');
     const tagList = document.getElementById('tag-list');
@@ -20,6 +24,10 @@
     const papersList = document.getElementById('papers-list');
     const emptyState = document.getElementById('empty-state');
     const chartCanvas = document.getElementById('papers-cumulative-chart');
+    const pagWrap = document.getElementById('papers-pagination');
+    const pagPrev = document.getElementById('page-prev');
+    const pagNext = document.getElementById('page-next');
+    const pagNumbers = document.getElementById('page-numbers');
 
     const readerCard = document.getElementById('reader-card');
     const readerContent = document.getElementById('reader-content');
@@ -87,6 +95,20 @@
     function renderCumulativeChart(papers) {
         if (!chartCanvas || typeof Chart === 'undefined') return;
         const { labels, data } = buildCumulativeSeries(papers);
+        // Fill header badges
+        const statTotal = document.getElementById('stat-total');
+        const statGrowth = document.getElementById('stat-growth');
+        const statSince = document.getElementById('stat-since');
+        if (statTotal && data.length) statTotal.textContent = data[data.length - 1];
+        if (statGrowth && data.length) {
+            const growth = data.length > 6 ? (data[data.length - 1] - data[data.length - 7]) : data[data.length - 1];
+            statGrowth.textContent = growth;
+        }
+        if (statSince && labels.length) {
+            const [y, m] = labels[0].split('-').map(Number);
+            const d = new Date(y, m - 1, 1);
+            statSince.textContent = d.toLocaleDateString(undefined, { year: 'numeric', month: 'short' });
+        }
         const ctx = chartCanvas.getContext('2d');
         // Destroy previous chart instance if any (store on canvas)
         if (chartCanvas._chartInstance) {
@@ -176,16 +198,22 @@
             const inTags = activeTags.size === 0 || (Array.isArray(p.tags) && [...activeTags].every(t => p.tags.includes(t)));
             return inSearch && inTags;
         });
+        currentPage = 1;
         renderList();
+        renderPagination();
     }
 
     function renderList() {
         papersList.innerHTML = '';
         const count = visiblePapers.length;
-        resultsCount.textContent = `${count} result${count === 1 ? '' : 's'}`;
+        const totalPages = Math.max(1, Math.ceil(count / PAGE_SIZE));
+        const page = Math.min(currentPage, totalPages);
+        const startIdx = (page - 1) * PAGE_SIZE;
+        const endIdx = Math.min(startIdx + PAGE_SIZE, count);
+        resultsCount.textContent = `${count} result${count === 1 ? '' : 's'}${count ? ` · showing ${startIdx + 1}-${endIdx}` : ''}`;
         emptyState.style.display = count ? 'none' : 'block';
 
-        visiblePapers.forEach((p, idx) => {
+        visiblePapers.slice(startIdx, endIdx).forEach((p) => {
             const li = document.createElement('li');
             li.className = 'paper-item';
 
@@ -243,6 +271,79 @@
         });
     }
 
+    function makePageButton(num, isActive = false) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = `page-number${isActive ? ' active' : ''}`;
+        btn.textContent = String(num);
+        btn.addEventListener('click', () => {
+            if (currentPage !== num) {
+                currentPage = num;
+                renderList();
+                renderPagination();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
+        return btn;
+    }
+
+    function renderPagination() {
+        if (!pagWrap) return;
+        const count = visiblePapers.length;
+        const totalPages = Math.max(1, Math.ceil(count / PAGE_SIZE));
+        if (totalPages <= 1) {
+            pagWrap.style.display = 'none';
+            return;
+        }
+        pagWrap.style.display = 'flex';
+
+        // Prev/Next state
+        if (pagPrev) {
+            pagPrev.disabled = currentPage <= 1;
+            pagPrev.onclick = () => { if (currentPage > 1) { currentPage -= 1; renderList(); renderPagination(); window.scrollTo({ top: 0, behavior: 'smooth' }); } };
+        }
+        if (pagNext) {
+            pagNext.disabled = currentPage >= totalPages;
+            pagNext.onclick = () => { if (currentPage < totalPages) { currentPage += 1; renderList(); renderPagination(); window.scrollTo({ top: 0, behavior: 'smooth' }); } };
+        }
+
+        // Page numbers window (max 7 numbers)
+        if (pagNumbers) {
+            pagNumbers.innerHTML = '';
+            const windowSize = 7;
+            let start = Math.max(1, currentPage - Math.floor(windowSize / 2));
+            let end = start + windowSize - 1;
+            if (end > totalPages) {
+                end = totalPages;
+                start = Math.max(1, end - windowSize + 1);
+            }
+
+            if (start > 1) {
+                pagNumbers.appendChild(makePageButton(1, currentPage === 1));
+                if (start > 2) {
+                    const ell = document.createElement('span');
+                    ell.className = 'page-ellipsis';
+                    ell.textContent = '…';
+                    pagNumbers.appendChild(ell);
+                }
+            }
+
+            for (let n = start; n <= end; n++) {
+                pagNumbers.appendChild(makePageButton(n, n === currentPage));
+            }
+
+            if (end < totalPages) {
+                if (end < totalPages - 1) {
+                    const ell = document.createElement('span');
+                    ell.className = 'page-ellipsis';
+                    ell.textContent = '…';
+                    pagNumbers.appendChild(ell);
+                }
+                pagNumbers.appendChild(makePageButton(totalPages, currentPage === totalPages));
+            }
+        }
+    }
+
     function openInReader(paper) {
         const placeholder = readerCard.querySelector('.reader-placeholder');
         if (placeholder) placeholder.style.display = 'none';
@@ -279,6 +380,7 @@
             buildTagChips(collectAllTags(allPapers));
             visiblePapers = allPapers.slice();
             renderList();
+            renderPagination();
             renderCumulativeChart(allPapers);
         } catch (e) {
             console.error(e);

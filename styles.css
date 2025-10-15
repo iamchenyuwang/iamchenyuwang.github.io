@@ -728,6 +728,41 @@ main {
     padding: 0.5rem 1rem 1.25rem 1rem;
 }
 
+.stats-badges {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-top: 0.75rem;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.6rem;
+    border-radius: 999px;
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
+.badge i { color: var(--primary-color); }
+
+.badge.success {
+    background: rgba(16, 185, 129, 0.15);
+    color: #065f46;
+}
+
+.badge.muted {
+    background: #eef2f7;
+}
+
+.chart-caption {
+    margin-top: 0.75rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
 .papers-layout {
     display: grid;
     grid-template-columns: 280px 1fr;
@@ -904,6 +939,57 @@ main {
     display: flex;
     gap: 0.5rem;
     flex-wrap: wrap;
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.page-btn {
+    padding: 0.5rem 0.9rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background: white;
+    color: var(--text-primary);
+    cursor: pointer;
+}
+
+.page-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.page-numbers {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.page-number {
+    min-width: 36px;
+    padding: 0.45rem 0.6rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background: white;
+    color: var(--text-secondary);
+    cursor: pointer;
+}
+
+.page-number.active,
+.page-number:hover {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.page-ellipsis {
+    display: inline-flex;
+    align-items: center;
+    color: var(--text-secondary);
+    padding: 0 0.35rem;
 }
 
 @media (max-width: 1200px) {
