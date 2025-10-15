@@ -1,0 +1,10 @@
+# Local secrets and tool artifacts
+secrets/
+.cursor/
+
+# Swap/temporary files
+*.swp
+*.tmp
+*.log
+
+git-push.sh
