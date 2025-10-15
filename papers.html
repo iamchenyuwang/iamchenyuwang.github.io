@@ -44,10 +44,25 @@
                 <div class="stats-card">
                     <div class="stats-card-header">
                         <h2 class="section-title" style="margin-bottom: 1rem;">Cumulative Papers Over Time</h2>
-                        <p class="stats-subtitle">Monthly cumulative count derived from publication dates</p>
+                         <p class="stats-subtitle">Monthly cumulative count derived from publication dates</p>
+                         <div class="stats-badges">
+                             <span class="badge">
+                                 <i class="fas fa-layer-group"></i>
+                                 <span id="stat-total">—</span>&nbsp;total
+                             </span>
+                             <span class="badge success">
+                                 <i class="fas fa-arrow-trend-up"></i>
+                                 +<span id="stat-growth">—</span>&nbsp;in last 6 months
+                             </span>
+                             <span class="badge muted">
+                                 <i class="fas fa-calendar-alt"></i>
+                                 since&nbsp;<span id="stat-since">Jan 2018</span>
+                             </span>
+                         </div>
                     </div>
                     <div class="chart-wrap">
                         <canvas id="papers-cumulative-chart" height="140"></canvas>
+                         <p class="chart-caption">This line shows the running total of curated "AI for Hardware/System" papers over time. Hover any point to see the cumulative count for that month.</p>
                     </div>
                 </div>
             </div>
@@ -75,6 +90,11 @@
 
                     <section class="papers-results" aria-live="polite">
                         <ul id="papers-list" class="papers-list"></ul>
+                        <div class="pagination" id="papers-pagination" aria-label="Papers pagination" style="display:none;">
+                            <button class="page-btn" id="page-prev" type="button" aria-label="Previous page">Prev</button>
+                            <div class="page-numbers" id="page-numbers"></div>
+                            <button class="page-btn" id="page-next" type="button" aria-label="Next page">Next</button>
+                        </div>
                         <div id="empty-state" class="empty-state" style="display:none;">
                             <i class="fas fa-book-open"></i>
                             <h3>No papers match your filters</h3>
