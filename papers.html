@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Papers - Chenyu Wang</title>
+    <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <h2>Chenyu Wang</h2>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="publications.html">Publications</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="papers.html" class="active">Papers</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="page-header">
+            <div class="container">
+                <h1>AI for Hardware/System Papers</h1>
+                <p class="header-subtitle">Browse, filter, and read papers curated by me</p>
+            </div>
+        </section>
+
+        <section class="papers-stats">
+            <div class="container">
+                <div class="stats-card">
+                    <div class="stats-card-header">
+                        <h2 class="section-title" style="margin-bottom: 1rem;">Cumulative Papers Over Time</h2>
+                        <p class="stats-subtitle">Monthly cumulative count derived from publication dates</p>
+                    </div>
+                    <div class="chart-wrap">
+                        <canvas id="papers-cumulative-chart" height="140"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="papers-section">
+            <div class="container">
+                <div class="papers-layout">
+                    <aside class="papers-filters">
+                        <div class="filter-group">
+                            <label class="filter-label">Search</label>
+                            <input id="paper-search" type="text" class="filter-input" placeholder="Title or abstract..." aria-label="Search papers">
+                        </div>
+                        <div class="filter-group">
+                            <label class="filter-label">Tags</label>
+                            <div id="tag-list" class="tag-list"></div>
+                        </div>
+                        <div class="filter-actions">
+                            <button id="reset-filters" class="btn-secondary" type="button">Reset</button>
+                        </div>
+                        <div class="filter-meta">
+                            <span id="results-count">0 results</span>
+                        </div>
+                    </aside>
+
+                    <section class="papers-results" aria-live="polite">
+                        <ul id="papers-list" class="papers-list"></ul>
+                        <div id="empty-state" class="empty-state" style="display:none;">
+                            <i class="fas fa-book-open"></i>
+                            <h3>No papers match your filters</h3>
+                            <p>Try adjusting your search or tag filters.</p>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Chenyu Wang. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="papers.js"></script>
+    
+</body>
+</html>
+
+
