@@ -129,13 +129,16 @@
                     backgroundColor: 'rgba(37, 99, 235, 0.15)',
                     tension: 0.25,
                     fill: true,
-                    pointRadius: 2,
+                    pointRadius: 0,
+                    pointHoverRadius: 3,
+                    hitRadius: 6,
                     borderWidth: 2,
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                elements: { point: { radius: 0 } },
                 plugins: {
                     legend: { display: false },
                     tooltip: {
