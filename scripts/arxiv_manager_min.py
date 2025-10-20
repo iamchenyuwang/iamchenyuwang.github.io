@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-arxiv_manager_min.py — 维护 “LLM for hardware design” 相关论文的 JSON 清单。
+arxiv_manager_min.py — 维护 “AI for Computer Systems” 相关论文的 JSON 清单。
 
 用法
 -----
@@ -15,6 +15,8 @@ python arxiv_manager_min.py --mode 1
 --output FILE      输出 JSON 路径（默认为 llm_hw_design_papers.json）
 --query  STRING    自定义检索词
 --max-results N    最多检索条数（默认 2000）
+--since  YYYY-MM-DD   仅包含该日期（含）之后发表的论文
+--until  YYYY-MM-DD   仅包含该日期（含）之前发表的论文
 
 依赖
 ----
@@ -24,7 +26,7 @@ pip install arxiv>=2.0.0
 import argparse
 import json
 import os
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 
 # 需要 arxiv 2.x
 import arxiv
@@ -39,32 +41,50 @@ from arxiv import UnexpectedEmptyPageError
 #     '(LLM OR "large language model") AND verilog',
 # ]
 
-# --------- arXiv 关键词配置 ---------
-# --------- arXiv 关键词配置（v3：含 CUDA & AI/ML）---------
-# --------- arXiv 关键词配置（v4：加入 *learning* 同义词）---------
-DEFAULT_QUERIES = [
-    # 原有（已验证）的7条：
-    '(GPT OR ChatGPT OR Codex OR "foundation model") AND ("hardware design")',
-    '(learning OR ai) AND ("hardware design")',
-    '(LLM OR "large language model") AND (ASIC OR chip OR EDA OR "electronic design automation")',
-    '(learning OR ai) AND (ASIC OR chip OR EDA OR "electronic design automation")',
-    '(LLM OR GPT) AND ("hardware description language" OR HDL OR Verilog OR VHDL OR Chisel OR SystemVerilog)',
-    '(learning OR ai) AND ("hardware description language" OR HDL OR Verilog OR VHDL OR Chisel OR SystemVerilog)',
-    '(LLM OR GPT) AND ("design space exploration" OR "design verification" OR testbench)',
-    '(learning OR ai) AND ("design space exploration" OR "design verification" OR testbench)',
-    '(LLM OR GPT) AND ("physical design" OR "place and route" OR "timing closure")',
-    '(learning OR ai) AND ("physical design" OR "place and route" OR "timing closure")',
-    '(LLM OR "generative AI") AND ("bug fixing" AND (Verilog OR VHDL))',
-    '(learning OR ai) AND ("bug fixing" AND (Verilog OR VHDL))',
-    '(LLM OR GPT) AND ("design automation" OR "hardware code generation" OR "HDL generation")',
-    '(learning OR ai) AND ("design automation" OR "hardware code generation" OR "HDL generation")',
-
-    # 新增的（风格和原版保持一致的几条扩展）：
-    '(LLM OR GPT) AND (analog)',
-    '(LLM OR GPT) AND (system OR architecture)',
-    '(LLM OR GPT) AND (CUDA OR GPU)',
-    '(LLM OR GPT) AND (code OR software OR program)',
+# --------- arXiv 关键词配置（AI for Systems & EDA/Hardware）---------
+# 为减少单次查询中过多 OR 导致的空白分页问题，将查询拆分为更小的原子组合：
+# 每个查询 = (一个 AI 术语) AND (一个主题术语)
+AI_TERMS = [
+    'LLM',
+    'GPT',
+    '"machine learning"',
+    '"reinforcement learning"',
 ]
+
+SUBJECT_TERMS = [
+    # 操作系统 / 资源管理 / 调度
+    '"operating system"', 'kernel', 'scheduling', '"resource management"', '"resource allocation"',
+    # 分布式 / 云 / 虚拟化 / 容器
+    '"distributed system"', 'cloud', 'datacenter', '"data center"', 'microservices', 'serverless', 'virtualization', 'Kubernetes', 'Docker',
+    # 网络
+    '"computer network"', 'networking', '"congestion control"', 'SDN', '"traffic engineering"', 'routing',
+    # 存储 / 文件系统
+    'storage', 'filesystem', '"file system"', 'NVMe', '"key-value store"',
+    # 数据库
+    'database', '"query optimizer"', 'indexing', '"cost model"',
+    # 编译器 / 程序分析 / 运行时
+    'compiler', 'LLVM', '"program analysis"', '"static analysis"', 'runtime', 'JIT',
+    # 性能建模 / 缓存 / 预取 / 调参
+    '"performance modeling"', 'autotuning', '"parameter tuning"', 'caching', 'prefetching',
+    # 调度 / 集群编排
+    '"job scheduling"', '"cluster scheduling"', 'autoscaling',
+    # 安全
+    'security', '"intrusion detection"', '"anomaly detection"', '"side channel"', 'malware', 'vulnerability',
+    # 物理设计 / P&R / 时序
+    '"physical design"', '"place and route"', 'placement', 'routing', '"timing closure"',
+    # 综合
+    'synthesis', '"logic synthesis"', '"high-level synthesis"', 'HLS',
+    # 验证
+    'verification', '"formal verification"', 'testbench', '"design verification"',
+    # HDL / 代码生成
+    '"hardware description language"', 'HDL', 'Verilog', 'VHDL', 'SystemVerilog', 'Chisel', '"HDL generation"',
+    # 微架构 / NoC / 存储层次
+    'microarchitecture', '"system architecture"', 'NoC', '"network-on-chip"', '"memory controller"', 'cache',
+    # EDA 总称
+    'EDA', '"electronic design automation"',
+]
+
+DEFAULT_QUERIES = [f'({ai}) AND ({subj})' for ai in AI_TERMS for subj in SUBJECT_TERMS]
 
 
 
@@ -75,11 +95,13 @@ DEFAULT_QUERIES = [
 # -----------------------------------
 
 
-DEFAULT_OUTPUT = "_data/llm_hw_design_papers.json"
+DEFAULT_OUTPUT = "_data/ai_systems_papers.json"
 DEFAULT_MAX_RESULTS = 2000
 
 
-def fetch_papers(query: str, max_results: int = DEFAULT_MAX_RESULTS):
+def fetch_papers(query: str, max_results: int = DEFAULT_MAX_RESULTS,
+                 since: datetime | None = None,
+                 until: datetime | None = None):
     """
     迭代返回符合查询的 arXiv 结果字典（按发表时间倒序）。
 
@@ -105,12 +127,19 @@ def fetch_papers(query: str, max_results: int = DEFAULT_MAX_RESULTS):
             count += 1
             if count > 0 and count % 100 == 0:
                 print(f"  ... fetched {count} results so far.")
+            pub_dt = result.published.replace(tzinfo=timezone.utc)
+            # Apply upper bound first (skip overly new ones)
+            if until is not None and pub_dt > until:
+                continue
+            # Apply lower bound: since results are sorted desc, we can stop once below since
+            if since is not None and pub_dt < since:
+                print("  Reached items older than --since; stopping this query early.")
+                break
             yield {
                 "title": result.title.strip(),
                 "url": result.entry_id,
                 "abstract": result.summary.strip().replace("\n", " "),
-                "published": result.published.replace(tzinfo=timezone.utc)
-                             .strftime("%Y-%m-%dT%H:%M:%SZ"),
+                "published": pub_dt.strftime("%Y-%m-%dT%H:%M:%SZ"),
             }
         
         if count > 0:
@@ -156,10 +185,39 @@ def main():
                         help="自定义检索词（可重复使用）。若省略则使用脚本内置的默认集合。")
     parser.add_argument("--max-results", type=int, default=DEFAULT_MAX_RESULTS,
                         help="最大检索条数（默认 2000）")
+    parser.add_argument("--queries-file", type=str,
+                        help="从文件读取查询（每行一个，支持 # 注释）。提供该参数将覆盖内置默认查询集合。")
+    parser.add_argument("--since", type=str, help="仅包含该日期（含）之后发表的论文，格式 YYYY-MM-DD")
+    parser.add_argument("--until", type=str, help="仅包含该日期（含）之前发表的论文，格式 YYYY-MM-DD")
     args = parser.parse_args()
 
-    # 若未显式提供 --query，则使用脚本预设 DEFAULT_QUERIES
-    queries = args.query if args.query else DEFAULT_QUERIES
+    # 若提供 --queries-file，则优先使用文件中的自定义查询；否则使用命令行 --query 或默认集合
+    if args.queries_file:
+        file_queries = []
+        try:
+            with open(args.queries_file, 'r', encoding='utf-8') as qf:
+                for line in qf:
+                    s = line.strip()
+                    if not s or s.startswith('#'):
+                        continue
+                    file_queries.append(s)
+        except Exception as e:
+            print(f"⚠️  读取查询文件失败（{args.queries_file}）：{e}")
+            file_queries = []
+        queries = file_queries if file_queries else DEFAULT_QUERIES
+    else:
+        # 若未显式提供 --query，则使用脚本预设 DEFAULT_QUERIES
+        queries = args.query if args.query else DEFAULT_QUERIES
+
+    # 解析日期边界（统一为 UTC 日期起止）
+    since_dt = None
+    until_dt = None
+    if args.since:
+        since_dt = datetime.strptime(args.since, "%Y-%m-%d").replace(tzinfo=timezone.utc)
+    if args.until:
+        # inclusive end-of-day: 23:59:59
+        until_base = datetime.strptime(args.until, "%Y-%m-%d").replace(tzinfo=timezone.utc)
+        until_dt = until_base + timedelta(days=1) - timedelta(seconds=1)
 
     print("Querying arXiv with the following term(s):")
     for q in queries:
@@ -171,7 +229,7 @@ def main():
     total_queries = len(queries)
     for i, q in enumerate(queries):
         print(f"\n--- Running query {i+1}/{total_queries} ---")
-        for item in fetch_papers(q, args.max_results):
+        for item in fetch_papers(q, args.max_results, since=since_dt, until=until_dt):
             if item["url"] in seen_urls:
                 continue
             new_items.append(item)

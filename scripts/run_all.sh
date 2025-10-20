@@ -1,10 +1,10 @@
 #!/bin/bash
 set -e
 
-echo "Running arxiv_manager_min.py..."
+echo "Running arxiv_manager_min.py (incremental)..."
 python3 scripts/arxiv_manager_min.py --mode 1
 
-echo "Running classify_papers.py..."
+echo "Running classify_papers.py (systems)..."
 python3 scripts/classify_papers.py 
 
 echo "Running shuffle_papers.py..."
