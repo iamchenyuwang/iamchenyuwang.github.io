@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """
-tag_papers.py — Adds specific sub-topic tags to each paper in
+tag_papers.py — Adds a single, high-level tag to each paper in
 filter_papers.json.
 
-This script takes papers already classified as "AI for Hardware/System" and
-assigns one to three granular tags (e.g., 'Verification', 'Synthesis') to each.
+This script takes papers already classified as "AI for Computer Systems" and
+assigns exactly ONE of a small set of classic, recognizably broad categories.
+If none fits, assigns "Other Topics".
 
 Usage Example
 -------------
@@ -43,62 +44,72 @@ from openai._exceptions import OpenAIError
 # ---------------------------------- Configuration ----------------------------------
 DEFAULT_INPUT = "_data/filter_papers.json"
 DEFAULT_OUTPUT = "_data/tagged_papers.json"
-DEFAULT_MODEL = "gpt-4o"
+DEFAULT_MODEL = "gpt-5-mini-2025-08-07"
 MAX_RETRY = 3
 RETRY_BACKOFF_SEC = 5
 DEFAULT_API_KEY_FILE = "secrets/api_key.json"
 
 VALID_TAGS = [
-    "Verification",
-    "Synthesis",
-    "P&R",
-    "Analog Design",
-    "System-level Optimization",
-    "Code Generation",
+    "Hardware Design",
+    "Computer Architecture",
+    "Circuit Design",
+    "Software Systems",
     "Security",
-    "Testing",
-    "Other",
+    "Other Topics",
 ]
+
+# Map broader or synonymous phrases to the canonical VALID_TAGS
+TAG_ALIASES = {
+    "Hardware Design": [
+        "hardware design", "eda", "electronic design automation", "physical design",
+        "place and route", "placement", "routing", "timing closure", "synthesis",
+        "logic synthesis", "high-level synthesis", "hls", "verification",
+        "formal verification", "testbench", "hdl", "verilog", "vhdl",
+        "systemverilog", "chisel", "rtl"
+    ],
+    "Computer Architecture": [
+        "architecture", "microarchitecture", "isa", "accelerator architecture",
+        "noc", "network-on-chip", "cache", "memory controller", "pipeline"
+    ],
+    "Circuit Design": [
+        "analog", "rf", "mixed-signal", "op-amp", "pll", "adc", "dac", "layout"
+    ],
+    "Software Systems": [
+        "operating system", "os", "kernel", "distributed", "cloud", "datacenter",
+        "data center", "virtualization", "kubernetes", "docker", "networking",
+        "sdn", "traffic engineering", "file system", "filesystem", "database",
+        "query optimizer", "compiler", "llvm", "runtime", "jit", "scheduling",
+        "resource management", "performance modeling", "autotuning", "caching",
+        "prefetching", "orchestration", "microservices"
+    ],
+    "Security": [
+        "security", "intrusion", "anomaly", "vulnerability", "malware",
+        "side channel", "side-channel", "trojan", "attestation", "enclave", "tee"
+    ],
+}
 
 # ------------------------------ Core Functions -----------------------------------
 
 def build_prompt(title: str, abstract: str) -> List[Dict[str, str]]:
     """Constructs the messages required for Chat Completion."""
     system_msg = (
-        "You are an expert research assistant specializing in computer architecture and hardware design. "
-        "Your task is to assign between one and three most-fitting category tags to academic papers based on their title and abstract.\n\n"
-        "The paper is known to be in the 'AI for Systems/Architecture/Hardware' domain. You must choose one to three tags from the following list that best describe the paper's primary contributions. If only one tag fits, provide only one. Do not force multiple tags if they are not relevant.\n"
-        f"Available tags: `{'`, `'.join(VALID_TAGS)}`\n\n"
-        "Here are explanations for each tag:\n"
-        "- **Verification**: Using AI/ML for formal verification, simulation, or validation of hardware designs.\n"
-        "- **Synthesis**: Using AI/ML for high-level synthesis (HLS), logic synthesis, or generating hardware from high-level descriptions.\n"
-        "- **P&R**: Using AI/ML for physical design tasks like placement, routing, and clock tree synthesis.\n"
-        "- **Analog Design**: Using AI/ML for the design, optimization, or layout of analog, RF, or mixed-signal circuits.\n"
-        "- **System-level Optimization**: Using AI/ML to optimize system-level concerns like architecture, power, performance, or resource management (e.g., cache policies, NoC routing, memory controllers).\n"
-        "- **Code Generation**: Using AI/ML to generate or optimize hardware description languages (e.g., Verilog, VHDL) or related code.\n"
-        "- **Security**: Using AI/ML to address hardware security challenges, such as detecting vulnerabilities, side-channel attacks, or Trojans.\n"
-        "- **Testing**: Using AI/ML for post-silicon validation, test pattern generation, or fault diagnosis.\n"
-        "- **Other**: If the paper's main contribution does not fit well into any of the above categories.\n\n"
-        "--- EXAMPLE 1 ---\n"
-        'Title: "A Deep-Learning-Based Framework for Routing Congestion Prediction in High-Performance Processors"\n'
-        'Abstract: "We propose a novel framework that uses a convolutional neural network to predict routing congestion hotspots early in the physical design flow..."\n'
-        "Correct Answer: P&R\n\n"
-        "--- EXAMPLE 2 ---\n"
-        'Title: "Automated Microarchitectural Design Space Exploration using Reinforcement Learning"\n'
-        'Abstract: "This work presents a reinforcement learning agent that navigates the vast design space of modern CPUs, simultaneously optimizing for power and performance by adjusting cache sizes and branch predictor strategies."\n'
-        "Correct Answer: System-level Optimization\n\n"
-        "--- EXAMPLE 3 ---\n"
-        'Title: "Leveraging Large Language Models for Automatic Generation and Verification of RTL Modules"\n'
-        'Abstract: "We introduce a novel method where an LLM generates Verilog code from natural language. The same model is then prompted to generate SystemVerilog assertions to create a self-contained verification environment."\n'
-        "Correct Answer: Code Generation, Verification\n"
-        "--- END OF EXAMPLES ---\n\n"
-        "Now, classify the following paper. Respond with one to three tags from the list, separated by commas."
+        "You are an expert research assistant specializing in computer systems and hardware. "
+        "Assign EXACTLY ONE category tag to each paper based on title and abstract. If none fits, respond with 'Other Topics'.\n\n"
+        "Choose one from: `Hardware Design`, `Computer Architecture`, `Circuit Design`, `Software Systems`, `Security`, `Other Topics`.\n\n"
+        "Definitions (brief):\n"
+        "- **Hardware Design**: EDA/RTL/HDL, synthesis, verification, physical design (P&R, timing).\n"
+        "- **Computer Architecture**: Microarchitecture, cache/memory hierarchy, NoC, ISA-level design.\n"
+        "- **Circuit Design**: Analog/RF/mixed-signal circuits, PLL/ADC/DAC, analog layout.\n"
+        "- **Software Systems**: OS, distributed systems, networking, storage/DB, compilers/runtimes.\n"
+        "- **Security**: System/hardware security (intrusion, anomaly, vulnerabilities, side-channels).\n"
+        "- **Other Topics**: If none of the above categories fits.\n\n"
+        "Respond with exactly one category name from the list above."
     )
 
     user_msg = (
         f"Title: {title}\n"
         f"Abstract: {abstract}\n\n"
-        "What are the most appropriate tags for this paper? (1-3 tags, comma-separated)"
+        "What is the single most appropriate tag for this paper? (choose exactly one)"
     )
 
     return [
@@ -115,7 +126,7 @@ def query_model(client: OpenAI, messages: List[Dict[str, str]], model: str = DEF
                 model=model,
                 messages=messages,
                 temperature=0.0,
-                max_tokens=40,  # Increased to allow for multiple tags
+                max_tokens=16,
             )
             ans = response.choices[0].message.content.strip()
             return ans
@@ -130,36 +141,45 @@ def query_model(client: OpenAI, messages: List[Dict[str, str]], model: str = DEF
     raise RuntimeError("Failed to get response from OpenAI API after retries")
 
 
+def _normalize_to_canonical_tag(result_str: str) -> str:
+    """Normalize model output to one of VALID_TAGS using direct match or alias keywords."""
+    text = result_str.strip().lower()
+    # Direct canonical match
+    for tag in VALID_TAGS:
+        if tag.lower() == text:
+            return tag
+    # Substring contains canonical name
+    for tag in VALID_TAGS:
+        if tag.lower() in text:
+            return tag
+    # Alias keyword match by priority order of VALID_TAGS
+    for tag in VALID_TAGS:
+        aliases = TAG_ALIASES.get(tag, [])
+        for kw in aliases:
+            if kw.lower() in text:
+                return tag
+    return "Other Topics"
+
+
 def tag_item(client: OpenAI, item: Dict[str, Any], model: str, overwrite: bool = False) -> None:
-    """Classifies a single paper record and adds a 'tags' list to it."""
+    """Classifies a single paper record and adds a single-element 'tags' list to it."""
     if not overwrite and "tags" in item:
         return
 
     messages = build_prompt(item["title"], item["abstract"])
     result_str = query_model(client, messages, model=model)
-
-    # Split the comma-separated string and find all valid tags
-    raw_tags = [tag.strip() for tag in result_str.split(',')]
-    found_tags = []
-    for raw_tag in raw_tags:
-        for valid_tag in VALID_TAGS:
-            if valid_tag.lower() in raw_tag.lower() and valid_tag not in found_tags:
-                found_tags.append(valid_tag)
-    
-    if not found_tags:
-        found_tags.append("Other")
-
-    item["tags"] = found_tags
+    canonical = _normalize_to_canonical_tag(result_str)
+    item["tags"] = [canonical]
 
 
 # ------------------------------ Main Function -----------------------------------
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Tag papers with 1-3 sub-topics using an OpenAI model")
+    parser = argparse.ArgumentParser(description="Tag papers with a single classic category using an OpenAI model")
     parser.add_argument("--input", default=DEFAULT_INPUT, help="Path to the input JSON file of filtered papers")
     parser.add_argument("--output", default=DEFAULT_OUTPUT, help="Path to the output JSON file with tagged papers")
     parser.add_argument("--model", default=DEFAULT_MODEL, help=f"OpenAI model name (default: {DEFAULT_MODEL})")
-    parser.add_argument("--jobs", "-j", type=int, default=20, help="Number of concurrent API requests (default: 20)")
+    parser.add_argument("--jobs", "-j", type=int, default=40, help="Number of concurrent API requests (default: 20)")
     parser.add_argument("--api-key-file", default=DEFAULT_API_KEY_FILE,
                         help=f"Path to file containing OpenAI API Key (default: {DEFAULT_API_KEY_FILE})")
     parser.add_argument("--overwrite", action="store_true", help="Force re-tagging all papers, ignoring existing ones")

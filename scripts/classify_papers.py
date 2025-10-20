@@ -1,19 +1,19 @@
 #!/usr/bin/env python3
 """
-classify_papers.py — Labels each paper in llm_hw_design_papers.json:
-whether it is of the "AI for Hardware/System" type (i.e., using AI/LLM to solve
-traditional hardware/system design, verification, optimization problems,
-rather than accelerating AI itself).
+classify_papers.py — Labels each paper in ai_systems_papers.json:
+whether it is of the "AI for Computer Systems" type (i.e., using AI/LLM/ML to
+solve systems problems in OS, distributed systems, networking, storage, DB, compilers,
+runtime, resource management, performance, etc., rather than accelerating AI itself).
 
 Usage Example
 -------------
-# Label all un-annotated papers using the default model gpt-4o-mini
-python classify_papers.py --input _data/llm_hw_design_papers.json \
-                         --output _data/llm_hw_design_papers_labeled.json
+# Label all un-annotated papers using the default model
+python classify_papers.py --input _data/ai_systems_papers.json \
+                         --output _data/ai_systems_papers_labeled.json
 
 Optional Arguments
 ------------------
---input FILE       Input JSON (default: _data/llm_hw_design_papers.json)
+--input FILE       Input JSON (default: _data/ai_systems_papers.json)
 --output FILE      Output JSON (default: *_labeled.json, overwrites input if omitted)
 --model MODEL      OpenAI model name (default: gpt-4o-mini, can be changed to gpt-3.5-turbo, etc.)
 --overwrite        Force re-evaluation even if the ai_for_hw field exists
@@ -40,11 +40,11 @@ from openai import OpenAI
 from openai._exceptions import OpenAIError
 
 # ---------------------------------- Configuration ----------------------------------
-DEFAULT_INPUT = "_data/llm_hw_design_papers.json"
+DEFAULT_INPUT = "_data/ai_systems_papers.json"
 DEFAULT_OUTPUT_SUFFIX = "_labeled.json"
-DEFAULT_DIFF_AGAINST = "_data/llm_hw_design_papers_labeled.json"
+DEFAULT_DIFF_AGAINST = "_data/ai_systems_papers_labeled.json"
 DEFAULT_FILTERED_FILENAME = "filter_papers.json"
-DEFAULT_MODEL = "gpt-4o"
+DEFAULT_MODEL = "gpt-5-mini-2025-08-07"
 MAX_RETRY = 3
 RETRY_BACKOFF_SEC = 5
 DEFAULT_API_KEY_FILE = "secrets/api_key.json"
@@ -75,24 +75,34 @@ def build_prompt(title: str, abstract: str) -> List[Dict[str, str]]:
     """Constructs the messages required for Chat Completion."""
     system_msg = (
         "You are an expert research assistant. Your task is to classify academic papers based on their title and abstract.\n"
-        "The goal is to identify if a paper's contribution is 'AI for Systems/Architecture/Hardware'.\n\n"
-        "A paper is 'AI for Systems/Architecture/Hardware' (respond with 'true') if it applies AI/ML/LLM techniques to solve traditional problems in computer systems, architecture, or hardware engineering. Examples include using AI for:\n"
-        "- Chip design (placement, routing, verification, EDA)\n"
-        "- System-level optimization\n"
-        "- Compilers or code generation for hardware\n"
-        "- Designing network-on-chip or memory architectures\n\n"
-        "A paper is NOT in this category (respond with 'false') if its primary focus is on 'Systems/Architecture/Hardware for AI'. This includes:\n"
-        "- Designing hardware accelerators for AI/ML models (e.g., custom ASICs, FPGAs for neural networks).\n"
-        "- Proposing new neural network algorithms that are hardware-efficient.\n"
-        "- Improving the performance of AI computations on a specific hardware platform.\n\n"
+        "The goal is to identify if a paper's contribution is 'AI for Computer Systems' (including hardware/EDA when AI is applied to design/verification/automation).\n\n"
+        "Respond with 'true' if the paper applies AI/ML/LLM to solve problems in any of the following areas (examples, not exhaustive):\n"
+        "- Operating systems (scheduling, resource management, memory, I/O)\n"
+        "- Distributed systems, cloud, virtualization, orchestration\n"
+        "- Computer networking (routing, congestion control, traffic engineering, SDN)\n"
+        "- Storage and filesystems\n"
+        "- Databases (query optimization, indexing, cost models)\n"
+        "- Compilers, program analysis, runtime/JIT\n"
+        "- Performance modeling, autotuning, caching/prefetching\n"
+        "- System security (intrusion/anomaly detection, side-channel analysis)\n"
+        "- Circuit Design (analog, RF, mixed-signal, PLL, ADC, DAC, layout)\n"
+        "- Hardware/EDA: physical design (placement, routing, timing closure), synthesis (HLS/logic), verification (formal/testbench), HDL/code generation, microarchitecture/NoC/memory/cache\n\n"
+        "Respond with 'false' if the primary focus is 'Systems/Hardware for AI' or 'AI acceleration', such as:\n"
+        "- Specialized accelerators or systems whose main goal is speeding up AI training/inference\n"
+        "- Tweaks to AI models mainly to run faster on specific hardware (GPU/TPU)\n"
+        "- Framework/runtime optimizations targeted primarily at AI workloads rather than general systems problems\n\n"
         "--- EXAMPLE 1 (Correct answer: true) ---\n"
-        'Title: "A Machine Learning Framework for Register Placement Optimization in Digital Circuit Design"\n'
-        'Abstract: "In modern digital circuit back-end design, ... we propose a machine learning framework that helps to define what are the guidelines and constraints for registers placement..."\n'
-        "Reasoning: This paper uses machine learning to solve a specific problem in digital circuit design (register placement). This is a clear case of 'AI for Systems/Architecture/Hardware'.\n\n"
-        "--- EXAMPLE 2 (Correct answer: false) ---\n"
-        'Title: "L1-Norm Batch Normalization for Efficient Training of Deep Neural Networks"\n'
-        'Abstract: "Batch Normalization (BN) has been proven to be quite effective at accelerating and improving the training of deep neural networks... This hardware-friendly normalization method ... simplify the hardware design of ASIC accelerators..."\n'
-        "Reasoning: This paper's goal is to accelerate AI training by making an algorithm more hardware-friendly. This is 'Systems/Architecture/Hardware for AI'.\n"
+        'Title: "Learning-based Cluster Scheduler for Heterogeneous Datacenters"\n'
+        'Abstract: "We propose a reinforcement-learning scheduler that improves job completion time and fairness across a heterogeneous cluster with GPUs and CPUs..."\n'
+        "Reasoning: Uses ML to solve a core systems problem (cluster scheduling).\n\n"
+        "--- EXAMPLE 2 (Correct answer: true) ---\n"
+        'Title: "Reinforcement Learning for Global Placement in VLSI Physical Design"\n'
+        'Abstract: "An RL agent learns to place standard cells to minimize wirelength and congestion..."\n'
+        "Reasoning: Uses ML to solve an EDA physical-design task (P&R), which is AI for systems/hardware.\n\n"
+        "--- EXAMPLE 3 (Correct answer: false) ---\n"
+        'Title: "A Low-Power Accelerator for Transformer Inference"\n'
+        'Abstract: "We design a novel ASIC to accelerate Transformer attention with quantization and sparsity..."\n'
+        "Reasoning: Hardware for accelerating AI, not AI for systems/hardware tasks.\n"
         "--- END OF EXAMPLES ---\n\n"
         "Now, classify the following paper. Respond with a single word: 'true' or 'false'."
     )
@@ -100,7 +110,7 @@ def build_prompt(title: str, abstract: str) -> List[Dict[str, str]]:
     user_msg = (
         f"Title: {title}\n"
         f"Abstract: {abstract}\n\n"
-        "Does this paper belong to the 'AI for Systems/Architecture/Hardware' category (true/false)?"
+        "Does this paper belong to the 'AI for Computer Systems' category (true/false)?"
     )
 
     return [
@@ -134,20 +144,20 @@ def query_model(client: OpenAI, messages: List[Dict[str, str]], model: str = DEF
 
 def classify_item(client: OpenAI, item: Dict[str, Any], model: str, overwrite: bool = False) -> bool:
     """Classifies a single paper record and returns a boolean result."""
-    if not overwrite and "ai_for_hw" in item:
-        return item["ai_for_hw"]
+    if not overwrite and "ai_for_systems" in item:
+        return item["ai_for_systems"]
 
     messages = build_prompt(item["title"], item["abstract"])
     result = query_model(client, messages, model=model)
     label = result.startswith("t")  # Accepts 'true'/'false' in any case
-    item["ai_for_hw"] = label
+    item["ai_for_systems"] = label
     return label
 
 
 # ------------------------------ Main Function -----------------------------------
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Classify papers as AI-for-HW or not using an OpenAI model")
+    parser = argparse.ArgumentParser(description="Classify papers as AI-for-Computer-Systems or not using an OpenAI model")
     parser.add_argument("--input", default=DEFAULT_INPUT, help="Path to the input JSON file")
     parser.add_argument("--output", help="Path to the output JSON file (default: <input>_labeled.json)")
     parser.add_argument("--filtered-output", help=f"Path for the filtered JSON file (default: {DEFAULT_FILTERED_FILENAME} in output dir)")
@@ -225,9 +235,9 @@ def main() -> None:
         final_data = labeled_data
         data = final_data # For progress reporting and final saving
     else:
-        # Original logic: process items that are missing the 'ai_for_hw' field
+        # Original logic: process items that are missing the 'ai_for_systems' field
         items_to_process = [
-            item for item in data if args.overwrite or "ai_for_hw" not in item
+            item for item in data if args.overwrite or "ai_for_systems" not in item
         ]
         final_data = data
 
@@ -269,23 +279,23 @@ def main() -> None:
         final_data.extend(items_to_process)
 
     # --- Final Saving Step ---
-    positive = sum(1 for item in final_data if item.get("ai_for_hw"))
+    positive = sum(1 for item in final_data if item.get("ai_for_systems"))
     total = len(final_data)
 
     try:
         safe_json_write(final_data, output_path)
-        print(f"✓ Classification complete: Total {total} papers, AI-for-HW {positive} papers → {output_path}")
+        print(f"✓ Classification complete: Total {total} papers, AI-for-Systems {positive} papers → {output_path}")
     except Exception:
         # If the main output fails, it's a critical error. Exit.
         print("❌ A critical error occurred while writing the main output file. The original file has been preserved.", file=sys.stderr)
         sys.exit(1)
 
     if positive > 0:
-        # Bug fix: use final_data, not data, for filtering.
-        filtered_data = [item for item in final_data if item.get("ai_for_hw")]
+        # Filter items that are AI-for-Systems
+        filtered_data = [item for item in final_data if item.get("ai_for_systems")]
         try:
             safe_json_write(filtered_data, filtered_output_path)
-            print(f"✓ Filtered list of {positive} AI-for-HW papers saved to → {filtered_output_path}")
+            print(f"✓ Filtered list of {positive} AI-for-Systems papers saved to → {filtered_output_path}")
         except Exception:
             # If the filtered list fails, it's not critical. The main file is safe.
             print(f"⚠️  Warning: Could not write the filtered output file. The main labeled file at {output_path} is safe.", file=sys.stderr)
