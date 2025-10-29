@@ -67,6 +67,34 @@ DEFAULT_QUERIES = [
 ]
 
 
+# 追加：系统视角的补充查询（仅正向关键词，不做排除）
+SYSTEM_QUERIES = [
+    # 调度与资源管理
+    '(LLM OR GPT OR learning OR ai OR reinforcement OR bandit) AND (scheduler OR scheduling OR autoscaling OR "bin packing" OR "resource allocation" OR placement OR partitioning OR sharding OR "load balancing")',
+
+    # 数据库与查询优化
+    '(LLM OR GPT OR learning OR ai OR reinforcement) AND ("query optimizer" OR "query optimization" OR "cardinality estimation" OR "learned index" OR indexing OR "index tuning" OR caching OR prefetch)',
+
+    # 网络与拥塞控制
+    '(LLM OR GPT OR learning OR ai OR reinforcement) AND ("congestion control" OR routing OR "traffic engineering" OR "flow scheduling" OR "rate control" OR "load balancer")',
+
+    # 编译器与代码生成/运行时
+    '(LLM OR GPT OR learning OR ai) AND (compiler OR "code generation" OR LLVM OR JIT OR "instruction scheduling" OR "register allocation")',
+
+    # OS、内存与存储/IO
+    '(LLM OR GPT OR learning OR ai) AND ("file system" OR "page cache" OR "I/O scheduler" OR "virtual memory" OR NUMA OR "memory management" OR "garbage collection" OR "cache replacement")',
+
+    # 分布式系统与一致性
+    '(LLM OR GPT OR learning OR ai OR reinforcement) AND (consensus OR Raft OR Paxos OR "failure detection" OR "leader election" OR replication)',
+
+    # 云/集群编排
+    '(LLM OR GPT OR learning OR ai OR reinforcement) AND (container OR Kubernetes OR "cluster scheduling" OR "resource scheduling" OR "job scheduling" OR "data center")',
+
+    # 存储系统细分
+    '(LLM OR GPT OR learning OR ai) AND (LSM-tree OR compaction OR "key-value store" OR "KV store" OR NVMe OR SSD)',
+]
+
+
 
 # ------------------------------------------------------------------
 
@@ -158,8 +186,8 @@ def main():
                         help="最大检索条数（默认 2000）")
     args = parser.parse_args()
 
-    # 若未显式提供 --query，则使用脚本预设 DEFAULT_QUERIES
-    queries = args.query if args.query else DEFAULT_QUERIES
+    # 若未显式提供 --query，则使用脚本预设 DEFAULT_QUERIES，并追加系统视角查询
+    queries = args.query if args.query else (DEFAULT_QUERIES + SYSTEM_QUERIES)
 
     print("Querying arXiv with the following term(s):")
     for q in queries:

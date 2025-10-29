@@ -162,14 +162,47 @@
         });
     }
 
+    // Allowed tag taxonomy (general systems) and aliases from older taxonomy
+    const ALLOWED_TAGS = [
+        'Scheduling and Resource Management',
+        'Database and Query Optimization',
+        'Networking and Congestion Control',
+        'Storage and I/O',
+        'Operating Systems and Virtualization',
+        'Code Generation',
+        'Distributed Systems and Consensus',
+        'Security',
+        'Other',
+    ];
+
+    const TAG_ALIASES = {
+        // Old -> New mapping to keep UI consistent after taxonomy update
+        'System-level Optimization': 'Scheduling and Resource Management',
+        'Synthesis': 'Code Generation',
+        'P&R': 'Other',
+        'Analog Design': 'Other',
+        'Testing': 'Other',
+        'Verification': 'Security',
+    };
+
+    function normalizeTagsForPaper(p) {
+        if (!Array.isArray(p.tags)) return [];
+        const mapped = p.tags
+            .map(t => TAG_ALIASES[t] || t)
+            .filter(t => ALLOWED_TAGS.includes(t));
+        return mapped.length ? Array.from(new Set(mapped)) : ['Other'];
+    }
+
     function collectAllTags(papers) {
         const set = new Set();
         for (const p of papers) {
-            if (Array.isArray(p.tags)) {
-                p.tags.forEach(t => set.add(t));
-            }
+            const tags = normalizeTagsForPaper(p);
+            p.tags = tags; // persist normalized tags for subsequent filtering/rendering
+            tags.forEach(t => set.add(t));
         }
-        return Array.from(set).sort((a, b) => a.localeCompare(b));
+        // Ensure a stable order similar to design intent
+        const order = new Map(ALLOWED_TAGS.map((t, i) => [t, i]));
+        return Array.from(set).sort((a, b) => (order.get(a) ?? 999) - (order.get(b) ?? 999) || a.localeCompare(b));
     }
 
     function buildTagChips(tags) {
@@ -181,10 +214,13 @@
             btn.textContent = tag;
             btn.setAttribute('data-tag', tag);
             btn.addEventListener('click', () => {
-                if (activeTags.has(tag)) {
-                    activeTags.delete(tag);
-                    btn.classList.remove('active');
-                } else {
+                // Single-select behavior: clicking one tag deselects others.
+                const wasActive = activeTags.has(tag);
+                // Clear any previous selection and visual states
+                activeTags.clear();
+                tagList.querySelectorAll('.tag-chip.active').forEach(el => el.classList.remove('active'));
+                // Re-select only if it was not active
+                if (!wasActive) {
                     activeTags.add(tag);
                     btn.classList.add('active');
                 }

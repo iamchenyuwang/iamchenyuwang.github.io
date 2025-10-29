@@ -49,14 +49,14 @@ RETRY_BACKOFF_SEC = 5
 DEFAULT_API_KEY_FILE = "secrets/api_key.json"
 
 VALID_TAGS = [
-    "Verification",
-    "Synthesis",
-    "P&R",
-    "Analog Design",
-    "System-level Optimization",
+    "Scheduling and Resource Management",
+    "Database and Query Optimization",
+    "Networking and Congestion Control",
+    "Storage and I/O",
+    "Operating Systems and Virtualization",
     "Code Generation",
+    "Distributed Systems and Consensus",
     "Security",
-    "Testing",
     "Other",
 ]
 
@@ -65,32 +65,32 @@ VALID_TAGS = [
 def build_prompt(title: str, abstract: str) -> List[Dict[str, str]]:
     """Constructs the messages required for Chat Completion."""
     system_msg = (
-        "You are an expert research assistant specializing in computer architecture and hardware design. "
+        "You are an expert research assistant specializing in computer systems (OS, databases, networking, distributed systems, storage, compilers) and hardware. "
         "Your task is to assign between one and three most-fitting category tags to academic papers based on their title and abstract.\n\n"
-        "The paper is known to be in the 'AI for Systems/Architecture/Hardware' domain. You must choose one to three tags from the following list that best describe the paper's primary contributions. If only one tag fits, provide only one. Do not force multiple tags if they are not relevant.\n"
+        "The paper is known to be in the 'AI for Systems' domain. Choose one to three tags from the following list that best describe the paper's primary contributions. If only one tag fits, provide only one; do not force multiple tags.\n"
         f"Available tags: `{'`, `'.join(VALID_TAGS)}`\n\n"
         "Here are explanations for each tag:\n"
-        "- **Verification**: Using AI/ML for formal verification, simulation, or validation of hardware designs.\n"
-        "- **Synthesis**: Using AI/ML for high-level synthesis (HLS), logic synthesis, or generating hardware from high-level descriptions.\n"
-        "- **P&R**: Using AI/ML for physical design tasks like placement, routing, and clock tree synthesis.\n"
-        "- **Analog Design**: Using AI/ML for the design, optimization, or layout of analog, RF, or mixed-signal circuits.\n"
-        "- **System-level Optimization**: Using AI/ML to optimize system-level concerns like architecture, power, performance, or resource management (e.g., cache policies, NoC routing, memory controllers).\n"
-        "- **Code Generation**: Using AI/ML to generate or optimize hardware description languages (e.g., Verilog, VHDL) or related code.\n"
-        "- **Security**: Using AI/ML to address hardware security challenges, such as detecting vulnerabilities, side-channel attacks, or Trojans.\n"
-        "- **Testing**: Using AI/ML for post-silicon validation, test pattern generation, or fault diagnosis.\n"
-        "- **Other**: If the paper's main contribution does not fit well into any of the above categories.\n\n"
+        "- **Scheduling and Resource Management**: Job/cluster scheduling, autoscaling, bin packing, resource allocation, load balancing.\n"
+        "- **Database and Query Optimization**: Query optimizer, cardinality estimation, indexing/learned index, cache, prefetch.\n"
+        "- **Networking and Congestion Control**: Congestion control, routing, traffic engineering, rate/flow control, load balancer.\n"
+        "- **Storage and I/O**: File systems, KV/LSM, compaction, I/O schedulers, NVMe/SSD.\n"
+        "- **Operating Systems and Virtualization**: Memory management, virtual memory, NUMA, page cache, containers/VMs.\n"
+        "- **Code Generation**: Generating or optimizing code (e.g., compiler passes, LLVM, synthesis) for systems/hardware performance or correctness.\n"
+        "- **Distributed Systems and Consensus**: Consensus, replication, failure detection, leader election.\n"
+        "- **Security**: System or hardware security (e.g., vulnerabilities, side channels, integrity).\n"
+        "- **Other**: If the paper's main contribution does not fit the above categories.\n\n"
         "--- EXAMPLE 1 ---\n"
-        'Title: "A Deep-Learning-Based Framework for Routing Congestion Prediction in High-Performance Processors"\n'
-        'Abstract: "We propose a novel framework that uses a convolutional neural network to predict routing congestion hotspots early in the physical design flow..."\n'
-        "Correct Answer: P&R\n\n"
+        'Title: "Reinforcement Learning for Cluster Job Scheduling with Tail-Latency SLA"\n'
+        'Abstract: "We propose an RL-based scheduler that allocates cluster resources to minimize tail latency while respecting job priorities and SLAs."\n'
+        "Correct Answer: Scheduling and Resource Management\n\n"
         "--- EXAMPLE 2 ---\n"
-        'Title: "Automated Microarchitectural Design Space Exploration using Reinforcement Learning"\n'
-        'Abstract: "This work presents a reinforcement learning agent that navigates the vast design space of modern CPUs, simultaneously optimizing for power and performance by adjusting cache sizes and branch predictor strategies."\n'
-        "Correct Answer: System-level Optimization\n\n"
+        'Title: "Robust Learned Cardinality Estimation for Analytical Queries"\n'
+        'Abstract: "We present a learned estimator that improves query optimizer plan selection across workloads with uncertainty-aware calibration."\n'
+        "Correct Answer: Database and Query Optimization\n\n"
         "--- EXAMPLE 3 ---\n"
-        'Title: "Leveraging Large Language Models for Automatic Generation and Verification of RTL Modules"\n'
-        'Abstract: "We introduce a novel method where an LLM generates Verilog code from natural language. The same model is then prompted to generate SystemVerilog assertions to create a self-contained verification environment."\n'
-        "Correct Answer: Code Generation, Verification\n"
+        'Title: "LLM-Guided Generation of Architecture-Specific Optimization Passes"\n'
+        'Abstract: "We use a large language model to propose and validate LLVM pass sequences that improve memory locality and vectorization on RISC-V."\n'
+        "Correct Answer: Code Generation\n"
         "--- END OF EXAMPLES ---\n\n"
         "Now, classify the following paper. Respond with one to three tags from the list, separated by commas."
     )
