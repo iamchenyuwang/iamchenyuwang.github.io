@@ -8,3 +8,5 @@ secrets/
 *.log
 
 git-push.sh
+run-push.sh
+PUSHING.md
