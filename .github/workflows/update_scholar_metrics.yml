@@ -2,7 +2,11 @@ name: Update Google Scholar Metrics
 
 on:
   schedule:
-    - cron: '0 3 * * *'  # every day at 03:00 UTC
+    - cron: '0 3 * * 1'  # every Monday at 03:00 UTC
+  push:
+    paths:
+      - '.github/workflows/update_scholar_metrics.yml'
+      - 'scripts/update_scholar_metrics.py'
   workflow_dispatch:
 
 jobs:
@@ -22,16 +26,10 @@ jobs:
           python-version: '3.11'
 
       - name: Update scholar metrics JSON
-        env:
-          SERPAPI_API_KEY: ${{ secrets.SERPAPI_API_KEY }}
-          SCHOLAR_AUTHOR_ID: QI96hfoAAAAJ
-        run: |
-          python scripts/update_scholar_metrics.py
+        run: python scripts/update_scholar_metrics.py
 
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "chore: refresh Google Scholar metrics"
           file_pattern: assets/data/scholar_metrics.json
-
-

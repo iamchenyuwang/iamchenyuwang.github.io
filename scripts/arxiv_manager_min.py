@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
-arxiv_manager_min.py — 维护 “LLM for hardware design” 相关论文的 JSON 清单。
+arxiv_manager_min.py — 维护 "AI for Computer Systems" 相关论文的 JSON 清单。
 
 用法
 -----
 # 第一次拉取全部结果（会覆盖旧 JSON）
-python arxiv_manager_min.py --mode 0
+python arxiv_manager_min.py --mode 0 --max-results 5000
 
 # 之后按需增量更新（只追加新论文）
 python arxiv_manager_min.py --mode 1
@@ -14,7 +14,7 @@ python arxiv_manager_min.py --mode 1
 --------
 --output FILE      输出 JSON 路径（默认为 llm_hw_design_papers.json）
 --query  STRING    自定义检索词
---max-results N    最多检索条数（默认 2000）
+--max-results N    最多检索条数（默认 5000）
 
 依赖
 ----
@@ -24,6 +24,7 @@ pip install arxiv>=2.0.0
 import argparse
 import json
 import os
+import time
 from datetime import datetime, timezone
 
 # 需要 arxiv 2.x
@@ -31,80 +32,48 @@ import arxiv
 # 当 arXiv API 某一分页意外为空时会抛出此异常
 from arxiv import UnexpectedEmptyPageError
 
-# 默认检索关键词集合（可按需修改）
-# DEFAULT_QUERIES = [
-#     '(LLM OR "large language model") AND "hardware design"',
-#     '"generative ai" AND fpga',
-#     '"large language model" AND "circuit design"',
-#     '(LLM OR "large language model") AND verilog',
-# ]
-
 # --------- arXiv 关键词配置 ---------
-# --------- arXiv 关键词配置（v3：含 CUDA & AI/ML）---------
-# --------- arXiv 关键词配置（v4：加入 *learning* 同义词）---------
-DEFAULT_QUERIES = [
-    # 原有（已验证）的7条：
-    '(GPT OR ChatGPT OR Codex OR "foundation model") AND ("hardware design")',
-    '(learning OR ai) AND ("hardware design")',
-    '(LLM OR "large language model") AND (ASIC OR chip OR EDA OR "electronic design automation")',
-    '(learning OR ai) AND (ASIC OR chip OR EDA OR "electronic design automation")',
-    '(LLM OR GPT) AND ("hardware description language" OR HDL OR Verilog OR VHDL OR Chisel OR SystemVerilog)',
-    '(learning OR ai) AND ("hardware description language" OR HDL OR Verilog OR VHDL OR Chisel OR SystemVerilog)',
-    '(LLM OR GPT) AND ("design space exploration" OR "design verification" OR testbench)',
-    '(learning OR ai) AND ("design space exploration" OR "design verification" OR testbench)',
-    '(LLM OR GPT) AND ("physical design" OR "place and route" OR "timing closure")',
-    '(learning OR ai) AND ("physical design" OR "place and route" OR "timing closure")',
-    '(LLM OR "generative AI") AND ("bug fixing" AND (Verilog OR VHDL))',
-    '(learning OR ai) AND ("bug fixing" AND (Verilog OR VHDL))',
-    '(LLM OR GPT) AND ("design automation" OR "hardware code generation" OR "HDL generation")',
-    '(learning OR ai) AND ("design automation" OR "hardware code generation" OR "HDL generation")',
-
-    # 新增的（风格和原版保持一致的几条扩展）：
-    '(LLM OR GPT) AND (analog)',
-    '(LLM OR GPT) AND (system OR architecture)',
-    '(LLM OR GPT) AND (CUDA OR GPU)',
-    '(LLM OR GPT) AND (code OR software OR program)',
+# A 组：按 arXiv 分类号 × ML 关键词（7 条）
+CATEGORY_QUERIES = [
+    # cs.DC (分布式计算) — 论文量大，2000条只到2024-11
+    'cat:cs.DC AND ("machine learning" OR "deep learning" OR "reinforcement learning" OR "neural network" OR LLM)',
+    # cs.DB (数据库) — 2000条到2020-10
+    'cat:cs.DB AND ("machine learning" OR "deep learning" OR "reinforcement learning" OR "neural network" OR LLM)',
+    # cs.AR (体系结构) — 2000条到2023-02
+    'cat:cs.AR AND ("machine learning" OR "deep learning" OR "neural network" OR LLM)',
+    # cs.NI (网络) — 2000条到2023-12
+    'cat:cs.NI AND ("machine learning" OR "deep learning" OR "reinforcement learning" OR "neural network" OR LLM)',
+    # cs.PF (性能) — 共1326篇，覆盖到2010
+    'cat:cs.PF AND ("machine learning" OR "deep learning" OR "reinforcement learning" OR "neural network" OR LLM)',
+    # cs.OS (操作系统) — 共154篇
+    'cat:cs.OS AND ("machine learning" OR "deep learning" OR "reinforcement learning" OR "neural network" OR LLM)',
+    # cs.PL (编程语言/编译器) — 共1381篇
+    'cat:cs.PL AND ("machine learning" OR "deep learning" OR "neural network" OR LLM)',
 ]
 
-
-# 追加：系统视角的补充查询（仅正向关键词，不做排除）
-SYSTEM_QUERIES = [
-    # 调度与资源管理
-    '(LLM OR GPT OR learning OR ai OR reinforcement OR bandit) AND (scheduler OR scheduling OR autoscaling OR "bin packing" OR "resource allocation" OR placement OR partitioning OR sharding OR "load balancing")',
-
-    # 数据库与查询优化
-    '(LLM OR GPT OR learning OR ai OR reinforcement) AND ("query optimizer" OR "query optimization" OR "cardinality estimation" OR "learned index" OR indexing OR "index tuning" OR caching OR prefetch)',
-
-    # 网络与拥塞控制
-    '(LLM OR GPT OR learning OR ai OR reinforcement) AND ("congestion control" OR routing OR "traffic engineering" OR "flow scheduling" OR "rate control" OR "load balancer")',
-
-    # 编译器与代码生成/运行时
-    '(LLM OR GPT OR learning OR ai) AND (compiler OR "code generation" OR LLVM OR JIT OR "instruction scheduling" OR "register allocation")',
-
-    # OS、内存与存储/IO
-    '(LLM OR GPT OR learning OR ai) AND ("file system" OR "page cache" OR "I/O scheduler" OR "virtual memory" OR NUMA OR "memory management" OR "garbage collection" OR "cache replacement")',
-
-    # 分布式系统与一致性
-    '(LLM OR GPT OR learning OR ai OR reinforcement) AND (consensus OR Raft OR Paxos OR "failure detection" OR "leader election" OR replication)',
-
-    # 云/集群编排
-    '(LLM OR GPT OR learning OR ai OR reinforcement) AND (container OR Kubernetes OR "cluster scheduling" OR "resource scheduling" OR "job scheduling" OR "data center")',
-
-    # 存储系统细分
-    '(LLM OR GPT OR learning OR ai) AND (LSM-tree OR compaction OR "key-value store" OR "KV store" OR NVMe OR SSD)',
+# B 组：专题精准查询（12 条）
+TOPIC_QUERIES = [
+    # Software Systems
+    '"learned index" OR "learned indexing" OR "learned cardinality" OR "self-tuning database"',
+    '("reinforcement learning" OR "deep learning") AND ("cluster scheduling" OR "job scheduling" OR autoscaling OR "bin packing")',
+    '("reinforcement learning" OR "deep learning") AND ("congestion control" OR "traffic engineering" OR "adaptive bitrate")',
+    '("machine learning" OR "neural network") AND ("compiler optimization" OR "instruction scheduling" OR "register allocation" OR "loop tiling" OR "polyhedral")',
+    '("machine learning" OR "deep learning") AND ("cache replacement" OR prefetching OR "memory allocation") AND (system OR server OR storage)',
+    '("machine learning" OR "reinforcement learning") AND ("LSM-tree" OR "log-structured" OR "KV store" OR "key-value store")',
+    # Hardware/RTL Design
+    '(LLM OR "large language model") AND (Verilog OR VHDL OR EDA OR "hardware design" OR chip OR ASIC)',
+    '("machine learning" OR "deep learning") AND (EDA OR "electronic design automation" OR "logic synthesis" OR "design verification")',
+    # Physical/Chip Design
+    '("machine learning" OR "deep learning" OR "reinforcement learning") AND ("place and route" OR floorplanning OR "timing closure" OR "physical design")',
+    '("machine learning" OR "deep learning") AND ("analog circuit" OR "circuit sizing" OR "analog design")',
+    # Cross-cutting
+    '("machine learning" OR "reinforcement learning") AND ("power management" OR DVFS OR "energy optimization") AND (chip OR processor OR server)',
+    'cat:cs.CR AND ("machine learning" OR "deep learning") AND ("side channel" OR "hardware security" OR "fault injection")',
 ]
-
-
-
-# ------------------------------------------------------------------
-
-# -------------------------------------------------------------------------
-
-# -----------------------------------
 
 
 DEFAULT_OUTPUT = "_data/llm_hw_design_papers.json"
-DEFAULT_MAX_RESULTS = 2000
+DEFAULT_MAX_RESULTS = 5000
 
 
 def fetch_papers(query: str, max_results: int = DEFAULT_MAX_RESULTS):
@@ -140,7 +109,7 @@ def fetch_papers(query: str, max_results: int = DEFAULT_MAX_RESULTS):
                 "published": result.published.replace(tzinfo=timezone.utc)
                              .strftime("%Y-%m-%dT%H:%M:%SZ"),
             }
-        
+
         if count > 0:
             print(f"  Finished query. Found {count} papers.")
         else:
@@ -149,7 +118,7 @@ def fetch_papers(query: str, max_results: int = DEFAULT_MAX_RESULTS):
     except UnexpectedEmptyPageError as e:
         # 某些分页可能因 arXiv API 状态异常返回空白，此时直接跳过当前关键词
         # 在 arxiv >= 2.1.0 中，当结果总数是 page_size 的整数倍时，
-        # 在取完最后一页后会触发此“异常”，但这属于正常行为。
+        # 在取完最后一页后会触发此"异常"，但这属于正常行为。
         # 我们在此处捕获它并直接忽略，以允许生成器正常退出。
         print(f"  Query finished (hit an empty page). Found {count} papers.")
         pass
@@ -183,11 +152,13 @@ def main():
     parser.add_argument("--query", action="append",
                         help="自定义检索词（可重复使用）。若省略则使用脚本内置的默认集合。")
     parser.add_argument("--max-results", type=int, default=DEFAULT_MAX_RESULTS,
-                        help="最大检索条数（默认 2000）")
+                        help="最大检索条数（默认 5000）")
+    parser.add_argument("--cooldown", type=int, default=60,
+                        help="查询之间的冷却秒数（默认 60，防 429 限流）")
     args = parser.parse_args()
 
-    # 若未显式提供 --query，则使用脚本预设 DEFAULT_QUERIES，并追加系统视角查询
-    queries = args.query if args.query else (DEFAULT_QUERIES + SYSTEM_QUERIES)
+    # 若未显式提供 --query，则使用脚本预设 CATEGORY_QUERIES + TOPIC_QUERIES
+    queries = args.query if args.query else (CATEGORY_QUERIES + TOPIC_QUERIES)
 
     print("Querying arXiv with the following term(s):")
     for q in queries:
@@ -198,6 +169,9 @@ def main():
     seen_urls = set()
     total_queries = len(queries)
     for i, q in enumerate(queries):
+        if i > 0 and args.cooldown > 0:
+            print(f"  ⏳ 冷却 {args.cooldown} 秒...")
+            time.sleep(args.cooldown)
         print(f"\n--- Running query {i+1}/{total_queries} ---")
         for item in fetch_papers(q, args.max_results):
             if item["url"] in seen_urls:
@@ -219,7 +193,7 @@ def main():
     print(f"\nMode 1: Merging with existing file at {args.output}...")
     existing_data, existing_urls = load_existing(args.output)
     print(f"Loaded {len(existing_data)} existing papers.")
-    
+
     add_count = 0
     merged = []
 

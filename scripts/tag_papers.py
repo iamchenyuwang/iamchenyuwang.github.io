@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
-tag_papers.py — Adds specific sub-topic tags to each paper in
+tag_papers.py — Adds a category tag to each paper in
 filter_papers.json.
 
-This script takes papers already classified as "AI for Hardware/System" and
-assigns one to three granular tags (e.g., 'Verification', 'Synthesis') to each.
+This script takes papers already classified as "AI for Computer Systems" and
+assigns exactly one category tag (Software Systems / Hardware Design / Physical+Chip / Other).
 
 Usage Example
 -------------
@@ -49,14 +49,9 @@ RETRY_BACKOFF_SEC = 5
 DEFAULT_API_KEY_FILE = "secrets/api_key.json"
 
 VALID_TAGS = [
-    "Scheduling and Resource Management",
-    "Database and Query Optimization",
-    "Networking and Congestion Control",
-    "Storage and I/O",
-    "Operating Systems and Virtualization",
-    "Code Generation",
-    "Distributed Systems and Consensus",
-    "Security",
+    "AI for Software Systems",
+    "AI for Hardware Design",
+    "AI for Physical/Chip Design",
     "Other",
 ]
 
@@ -65,40 +60,39 @@ VALID_TAGS = [
 def build_prompt(title: str, abstract: str) -> List[Dict[str, str]]:
     """Constructs the messages required for Chat Completion."""
     system_msg = (
-        "You are an expert research assistant specializing in computer systems (OS, databases, networking, distributed systems, storage, compilers) and hardware. "
-        "Your task is to assign between one and three most-fitting category tags to academic papers based on their title and abstract.\n\n"
-        "The paper is known to be in the 'AI for Systems' domain. Choose one to three tags from the following list that best describe the paper's primary contributions. If only one tag fits, provide only one; do not force multiple tags.\n"
+        "You are an expert research assistant specializing in computer systems and hardware. "
+        "Your task is to assign exactly ONE category tag to academic papers based on their title and abstract.\n\n"
+        "The paper is known to be in the 'AI for Computer Systems' domain. Choose the single best-fitting tag from the following list.\n"
         f"Available tags: `{'`, `'.join(VALID_TAGS)}`\n\n"
         "Here are explanations for each tag:\n"
-        "- **Scheduling and Resource Management**: Job/cluster scheduling, autoscaling, bin packing, resource allocation, load balancing.\n"
-        "- **Database and Query Optimization**: Query optimizer, cardinality estimation, indexing/learned index, cache, prefetch.\n"
-        "- **Networking and Congestion Control**: Congestion control, routing, traffic engineering, rate/flow control, load balancer.\n"
-        "- **Storage and I/O**: File systems, KV/LSM, compaction, I/O schedulers, NVMe/SSD.\n"
-        "- **Operating Systems and Virtualization**: Memory management, virtual memory, NUMA, page cache, containers/VMs.\n"
-        "- **Code Generation**: Generating or optimizing code (e.g., compiler passes, LLVM, synthesis) for systems/hardware performance or correctness.\n"
-        "- **Distributed Systems and Consensus**: Consensus, replication, failure detection, leader election.\n"
-        "- **Security**: System or hardware security (e.g., vulnerabilities, side channels, integrity).\n"
-        "- **Other**: If the paper's main contribution does not fit the above categories.\n\n"
+        "- **AI for Software Systems**: Using AI/ML to improve software-layer systems — scheduling, resource management, databases, query optimization, "
+        "learned indexes, networking, congestion control, traffic engineering, compilers, code optimization, storage systems, KV stores, "
+        "operating systems, memory management, caching, prefetching, distributed systems, consensus, cloud/cluster orchestration.\n"
+        "- **AI for Hardware Design**: Using AI/ML for RTL/logic-level hardware design — HDL/Verilog/VHDL code generation, "
+        "logic synthesis, design verification, testbench generation, EDA tool automation, design space exploration, hardware security.\n"
+        "- **AI for Physical/Chip Design**: Using AI/ML for physical design and analog — placement, routing, floorplanning, "
+        "timing closure, analog circuit sizing, power management, DVFS optimization, chip-level layout.\n"
+        "- **Other**: If the paper does not clearly fit the above three categories.\n\n"
         "--- EXAMPLE 1 ---\n"
         'Title: "Reinforcement Learning for Cluster Job Scheduling with Tail-Latency SLA"\n'
         'Abstract: "We propose an RL-based scheduler that allocates cluster resources to minimize tail latency while respecting job priorities and SLAs."\n'
-        "Correct Answer: Scheduling and Resource Management\n\n"
+        "Correct Answer: AI for Software Systems\n\n"
         "--- EXAMPLE 2 ---\n"
-        'Title: "Robust Learned Cardinality Estimation for Analytical Queries"\n'
-        'Abstract: "We present a learned estimator that improves query optimizer plan selection across workloads with uncertainty-aware calibration."\n'
-        "Correct Answer: Database and Query Optimization\n\n"
+        'Title: "LLM-Assisted Verilog Generation for RISC-V Processor Design"\n'
+        'Abstract: "We use a large language model to generate synthesizable Verilog modules for a RISC-V core, reducing design time by 3x."\n'
+        "Correct Answer: AI for Hardware Design\n\n"
         "--- EXAMPLE 3 ---\n"
-        'Title: "LLM-Guided Generation of Architecture-Specific Optimization Passes"\n'
-        'Abstract: "We use a large language model to propose and validate LLVM pass sequences that improve memory locality and vectorization on RISC-V."\n'
-        "Correct Answer: Code Generation\n"
+        'Title: "Deep Reinforcement Learning for VLSI Macro Placement"\n'
+        'Abstract: "We apply deep RL to optimize macro placement in VLSI physical design, achieving better wirelength and timing closure."\n'
+        "Correct Answer: AI for Physical/Chip Design\n"
         "--- END OF EXAMPLES ---\n\n"
-        "Now, classify the following paper. Respond with one to three tags from the list, separated by commas."
+        "Now, classify the following paper. Respond with exactly one tag from the list."
     )
 
     user_msg = (
         f"Title: {title}\n"
         f"Abstract: {abstract}\n\n"
-        "What are the most appropriate tags for this paper? (1-3 tags, comma-separated)"
+        "What is the most appropriate tag for this paper? (exactly one tag)"
     )
 
     return [
@@ -155,7 +149,7 @@ def tag_item(client: OpenAI, item: Dict[str, Any], model: str, overwrite: bool =
 # ------------------------------ Main Function -----------------------------------
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Tag papers with 1-3 sub-topics using an OpenAI model")
+    parser = argparse.ArgumentParser(description="Tag papers with a category (Software/Hardware/Physical/Other) using an OpenAI model")
     parser.add_argument("--input", default=DEFAULT_INPUT, help="Path to the input JSON file of filtered papers")
     parser.add_argument("--output", default=DEFAULT_OUTPUT, help="Path to the output JSON file with tagged papers")
     parser.add_argument("--model", default=DEFAULT_MODEL, help=f"OpenAI model name (default: {DEFAULT_MODEL})")
