@@ -162,28 +162,15 @@
         });
     }
 
-    // Allowed tag taxonomy (general systems) and aliases from older taxonomy
+    // Allowed tag taxonomy (3+1 categories)
     const ALLOWED_TAGS = [
-        'Scheduling and Resource Management',
-        'Database and Query Optimization',
-        'Networking and Congestion Control',
-        'Storage and I/O',
-        'Operating Systems and Virtualization',
-        'Code Generation',
-        'Distributed Systems and Consensus',
-        'Security',
+        'AI for Software Systems',
+        'AI for Hardware Design',
+        'AI for Physical/Chip Design',
         'Other',
     ];
 
-    const TAG_ALIASES = {
-        // Old -> New mapping to keep UI consistent after taxonomy update
-        'System-level Optimization': 'Scheduling and Resource Management',
-        'Synthesis': 'Code Generation',
-        'P&R': 'Other',
-        'Analog Design': 'Other',
-        'Testing': 'Other',
-        'Verification': 'Security',
-    };
+    const TAG_ALIASES = {};
 
     function normalizeTagsForPaper(p) {
         if (!Array.isArray(p.tags)) return [];

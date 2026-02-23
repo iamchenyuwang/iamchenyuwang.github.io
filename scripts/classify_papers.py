@@ -75,24 +75,33 @@ def build_prompt(title: str, abstract: str) -> List[Dict[str, str]]:
     """Constructs the messages required for Chat Completion."""
     system_msg = (
         "You are an expert research assistant. Your task is to classify academic papers based on their title and abstract.\n"
-        "The goal is to identify if a paper's contribution is 'AI for Systems/Architecture/Hardware'.\n\n"
-        "A paper is 'AI for Systems/Architecture/Hardware' (respond with 'true') if it applies AI/ML/LLM techniques to solve traditional problems in computer systems, architecture, or hardware engineering. Examples include using AI for:\n"
+        "The goal is to identify if a paper's contribution is 'AI for Computer Systems'.\n\n"
+        "A paper is 'AI for Computer Systems' (respond with 'true') if it applies AI/ML/LLM techniques to solve traditional problems in computer systems, software systems, architecture, or hardware engineering. Examples include using AI for:\n"
         "- Chip design (placement, routing, verification, EDA)\n"
-        "- System-level optimization\n"
-        "- Compilers or code generation for hardware\n"
-        "- Designing network-on-chip or memory architectures\n\n"
-        "A paper is NOT in this category (respond with 'false') if its primary focus is on 'Systems/Architecture/Hardware for AI'. This includes:\n"
+        "- System-level optimization (scheduling, resource management, autoscaling)\n"
+        "- Database and query optimization (learned indexes, cardinality estimation)\n"
+        "- Networking (congestion control, traffic engineering, routing)\n"
+        "- Compilers and code generation (instruction scheduling, register allocation)\n"
+        "- Storage and memory systems (cache replacement, prefetching, KV stores)\n"
+        "- Operating systems (memory management, I/O scheduling)\n"
+        "- Hardware security (side-channel analysis, fault injection detection)\n\n"
+        "A paper is NOT in this category (respond with 'false') if its primary focus is on 'Systems/Hardware for AI'. This includes:\n"
         "- Designing hardware accelerators for AI/ML models (e.g., custom ASICs, FPGAs for neural networks).\n"
         "- Proposing new neural network algorithms that are hardware-efficient.\n"
-        "- Improving the performance of AI computations on a specific hardware platform.\n\n"
+        "- Improving the performance of AI computations on a specific hardware platform.\n"
+        "- Pure AI/ML methodology papers with no systems application.\n\n"
         "--- EXAMPLE 1 (Correct answer: true) ---\n"
         'Title: "A Machine Learning Framework for Register Placement Optimization in Digital Circuit Design"\n'
         'Abstract: "In modern digital circuit back-end design, ... we propose a machine learning framework that helps to define what are the guidelines and constraints for registers placement..."\n'
-        "Reasoning: This paper uses machine learning to solve a specific problem in digital circuit design (register placement). This is a clear case of 'AI for Systems/Architecture/Hardware'.\n\n"
-        "--- EXAMPLE 2 (Correct answer: false) ---\n"
+        "Reasoning: This paper uses machine learning to solve a specific problem in digital circuit design (register placement). This is a clear case of 'AI for Computer Systems'.\n\n"
+        "--- EXAMPLE 2 (Correct answer: true) ---\n"
+        'Title: "Learned Index Structures for Dynamic Workloads"\n'
+        'Abstract: "We propose a learned index that replaces traditional B-tree indexes in databases, using neural networks to predict the position of keys..."\n'
+        "Reasoning: This paper uses ML to replace a core database data structure. This is 'AI for Computer Systems' (software systems).\n\n"
+        "--- EXAMPLE 3 (Correct answer: false) ---\n"
         'Title: "L1-Norm Batch Normalization for Efficient Training of Deep Neural Networks"\n'
         'Abstract: "Batch Normalization (BN) has been proven to be quite effective at accelerating and improving the training of deep neural networks... This hardware-friendly normalization method ... simplify the hardware design of ASIC accelerators..."\n'
-        "Reasoning: This paper's goal is to accelerate AI training by making an algorithm more hardware-friendly. This is 'Systems/Architecture/Hardware for AI'.\n"
+        "Reasoning: This paper's goal is to accelerate AI training by making an algorithm more hardware-friendly. This is 'Systems/Hardware for AI'.\n"
         "--- END OF EXAMPLES ---\n\n"
         "Now, classify the following paper. Respond with a single word: 'true' or 'false'."
     )
@@ -100,7 +109,7 @@ def build_prompt(title: str, abstract: str) -> List[Dict[str, str]]:
     user_msg = (
         f"Title: {title}\n"
         f"Abstract: {abstract}\n\n"
-        "Does this paper belong to the 'AI for Systems/Architecture/Hardware' category (true/false)?"
+        "Does this paper belong to the 'AI for Computer Systems' category (true/false)?"
     )
 
     return [
