@@ -1,5 +1,5 @@
 {
-  "citations": 64,
+  "citations": 66,
   "h_index": 3,
   "i10_index": 3,
   "articles": [
@@ -17,7 +17,7 @@
     },
     {
       "title": "Research progress in architecture and application of RRAM with computing-in-memory",
-      "citations": 33
+      "citations": 34
     },
     {
       "title": "Gibbon: Efficient Co-Exploration of NN Model and Processing-In-Memory Architecture",
@@ -28,5 +28,5 @@
       "citations": 1
     }
   ],
-  "last_updated": "2026-02-27T07:08:39Z"
+  "last_updated": "2026-03-09T04:45:11Z"
 }
