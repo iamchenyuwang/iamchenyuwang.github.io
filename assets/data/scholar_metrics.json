@@ -1,5 +1,5 @@
 {
-  "citations": 70,
+  "citations": 71,
   "h_index": 3,
   "i10_index": 3,
   "articles": [
@@ -26,7 +26,11 @@
     {
       "title": "Gibbon: Efﬁcient Co-Exploration of NN Model and Processing-In-Memory Architecture",
       "citations": 2
+    },
+    {
+      "title": "Slm-mux: Orchestrating small language models for reasoning",
+      "citations": 6
     }
   ],
-  "last_updated": "2026-06-08T07:20:04Z"
+  "last_updated": "2026-06-15T08:45:19Z"
 }
