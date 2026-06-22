@@ -9,7 +9,7 @@
     },
     {
       "title": "Gibbon: An Efficient Co-Exploration Framework of NN Model and Processing-In-Memory Architecture",
-      "citations": 13
+      "citations": 14
     },
     {
       "title": "EPIM: Efficient Processing-In-Memory Accelerators based on Epitome",
@@ -17,7 +17,7 @@
     },
     {
       "title": "Research progress in architecture and application of RRAM with computing-in-memory",
-      "citations": 36
+      "citations": 37
     },
     {
       "title": "Gibbon: Efficient Co-Exploration of NN Model and Processing-In-Memory Architecture",
@@ -26,11 +26,7 @@
     {
       "title": "Gibbon: Efﬁcient Co-Exploration of NN Model and Processing-In-Memory Architecture",
       "citations": 2
-    },
-    {
-      "title": "Slm-mux: Orchestrating small language models for reasoning",
-      "citations": 6
     }
   ],
-  "last_updated": "2026-06-15T08:45:19Z"
+  "last_updated": "2026-06-22T08:46:08Z"
 }
