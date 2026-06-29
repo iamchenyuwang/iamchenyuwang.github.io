@@ -13,7 +13,7 @@
     },
     {
       "title": "EPIM: Efficient Processing-In-Memory Accelerators based on Epitome",
-      "citations": 2
+      "citations": 3
     },
     {
       "title": "Research progress in architecture and application of RRAM with computing-in-memory",
@@ -21,12 +21,12 @@
     },
     {
       "title": "Gibbon: Efficient Co-Exploration of NN Model and Processing-In-Memory Architecture",
-      "citations": 17
+      "citations": 18
     },
     {
       "title": "Gibbon: Efﬁcient Co-Exploration of NN Model and Processing-In-Memory Architecture",
       "citations": 2
     }
   ],
-  "last_updated": "2026-06-22T08:46:08Z"
+  "last_updated": "2026-06-29T07:19:22Z"
 }
