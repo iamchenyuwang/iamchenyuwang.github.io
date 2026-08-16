@@ -12,7 +12,7 @@ home.js             # Mobile navigation and active-section behavior
 papers.html         # Standalone searchable community paper collection
 papers.js           # Paper collection filtering and chart logic
 styles.css          # Legacy styles used by the paper collection
-assets/             # Profile image, metrics, PDFs, and other static files
+assets/             # Profile image, PDFs, and other static files
 Chenyu_Wang_Resume.pdf # Current one-page resume
 ```
 
@@ -36,7 +36,6 @@ There is no build step. GitHub Pages can serve the repository directly.
 - Edit profile, news, publications, and experience in `index.html`.
 - Replace `assets/images/profile.jpg` to update the portrait.
 - Replace `Chenyu_Wang_Resume.pdf` to update the resume linked from the homepage.
-- Google Scholar metrics are loaded from `assets/data/scholar_metrics.json`.
 - The searchable reading list is generated from the JSON files in `_data/`.
 
 ## Contact
