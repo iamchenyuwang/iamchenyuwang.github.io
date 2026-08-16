@@ -36,7 +36,6 @@ LAST_MESSAGE="$RUN_DIRECTORY/last-message.txt"
 
     timeout 55m /usr/bin/codex exec \
         --cd "$RUN_DIRECTORY/repository" \
-        --sandbox workspace-write \
         --approve-for-me \
         --output-last-message "$LAST_MESSAGE" \
         - < "$RUN_DIRECTORY/repository/automation/monthly_publication_prompt.md"
