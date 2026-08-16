@@ -40,11 +40,18 @@ There is no build step. GitHub Pages can serve the repository directly.
 
 ## Publication updates
 
-The `Monthly Publication Check` GitHub Actions workflow runs on the first day of
-each month. It checks arXiv for recent papers authored by Chenyu Wang, verifies
-identity using trusted co-authors from the existing publication record, skips
-duplicate titles, and adds verified new papers to the appropriate year on the
-homepage. The workflow can also be run manually from the Actions tab.
+A local monthly cron job starts a fresh Codex review using
+`scripts/run_monthly_publication_agent.sh`. The agent searches current primary
+sources, checks each candidate against Chenyu's research identity and established
+collaborators, and only then updates and pushes the homepage. The durable review
+instructions live in `automation/monthly_publication_prompt.md`; run logs are
+written to the ignored `logs/monthly-publications/` directory.
+
+To run the same review manually:
+
+```bash
+./scripts/run_monthly_publication_agent.sh
+```
 
 ## Contact
 
