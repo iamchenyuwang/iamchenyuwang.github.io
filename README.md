@@ -1,131 +1,45 @@
-# Chenyu Wang - Personal Website
+# Chenyu Wang — Academic Website
 
-A modern, professional personal website showcasing research, publications, and blog posts.
+A static, single-page academic website. The homepage contains the research profile,
+news, publications, education, teaching, and community work in one dense reading flow.
 
-## 🌟 Features
+## Structure
 
-- **Responsive Design**: Works seamlessly on desktop, tablet, and mobile devices
-- **Modern UI/UX**: Clean and professional interface with smooth animations
-- **Three Main Sections**:
-  - **Home**: Personal introduction and research interests
-  - **Publications**: Complete list of academic papers with citation metrics
-  - **Blog**: Platform for sharing insights and thoughts
-
-## 🚀 Quick Start
-
-1. Clone this repository
-2. Open `index.html` in your web browser
-3. That's it! No build process required.
-
-## 📁 File Structure
-
-```
-├── index.html          # Homepage
-├── publications.html   # Publications list
-├── blog.html          # Blog page
-├── styles.css         # All styling
-├── script.js          # Interactive features
-└── README.md          # This file
+```text
+index.html          # Main academic profile and publication record
+home.css            # Homepage layout and responsive styles
+home.js             # Mobile navigation and active-section behavior
+papers.html         # Standalone searchable community paper collection
+papers.js           # Paper collection filtering and chart logic
+styles.css          # Legacy styles used by the paper collection
+assets/             # Profile image, metrics, PDFs, and other static files
+Chenyu_Wang_Resume.pdf # Current one-page resume
 ```
 
-## 🛠️ Customization
+Legacy URLs `publications.html` and `blog.html` redirect into the single-page site so
+existing external links continue to work.
 
-### Adding Your Photo
+## Local preview
 
-Replace the profile placeholder in `index.html`:
-```html
-<div class="profile-placeholder">
-    <i class="fas fa-user"></i>
-</div>
+Run a static server from the repository root:
+
+```bash
+python3 -m http.server 8000
 ```
 
-With:
-```html
-<img src="your-photo.jpg" alt="Chenyu Wang" style="width: 300px; height: 300px; border-radius: 50%; object-fit: cover;">
-```
+Then open `http://localhost:8000`.
 
-### Updating Publications
+There is no build step. GitHub Pages can serve the repository directly.
 
-Edit the publication entries in `publications.html`. Each publication follows this structure:
-```html
-<div class="pub-item">
-    <div class="pub-year">2024</div>
-    <div class="pub-content">
-        <h3 class="pub-title">Paper Title</h3>
-        <p class="pub-authors">Authors</p>
-        <p class="pub-venue">Venue</p>
-        <!-- Add citation metrics and links -->
-    </div>
-</div>
-```
+## Updating content
 
-### Adding Blog Posts
+- Edit profile, news, publications, and experience in `index.html`.
+- Replace `assets/images/profile.jpg` to update the portrait.
+- Replace `Chenyu_Wang_Resume.pdf` to update the resume linked from the homepage.
+- Google Scholar metrics are loaded from `assets/data/scholar_metrics.json`.
+- The searchable reading list is generated from the JSON files in `_data/`.
 
-Add new blog cards in `blog.html`:
-```html
-<article class="blog-card">
-    <div class="blog-image">
-        <!-- Add image or placeholder -->
-    </div>
-    <div class="blog-info">
-        <span class="blog-date">Date</span>
-        <span class="blog-tag">Category</span>
-    </div>
-    <h3 class="blog-title">Title</h3>
-    <p class="blog-excerpt">Excerpt</p>
-</article>
-```
+## Contact
 
-## 🎨 Color Customization
-
-To change the color scheme, edit the CSS variables in `styles.css`:
-```css
-:root {
-    --primary-color: #2563eb;    /* Main theme color */
-    --secondary-color: #1e40af;  /* Darker shade */
-    --accent-color: #3b82f6;     /* Lighter shade */
-    /* ... other colors */
-}
-```
-
-## 📱 Social Links
-
-Update your social media links in `index.html`:
-- Google Scholar
-- GitHub
-- Email
-
-## 🌐 Deployment
-
-### GitHub Pages
-
-1. Push this repository to GitHub
-2. Go to repository Settings → Pages
-3. Select "Deploy from a branch"
-4. Choose the `main` branch and `/root` folder
-5. Your site will be available at `https://yourusername.github.io`
-
-### Other Hosting
-
-Simply upload all files to any web hosting service. No server-side processing required.
-
-## 📊 Current Statistics
-
-- **Citations**: 42
-- **h-index**: 3
-- **i10-index**: 2
-
-## 📄 License
-
-Feel free to use this template for your own personal website.
-
-## 👤 Contact
-
-- **Email**: chenyu_wang@seas.harvard.edu
-- **Google Scholar**: [Profile Link](https://scholar.google.com/citations?user=QI96hfoAAAAJ&hl=en)
-
----
-
-Built with ❤️ using HTML, CSS, and JavaScript
-
-# Test
+- Email: chenyu_wang@seas.harvard.edu
+- [Google Scholar](https://scholar.google.com/citations?user=QI96hfoAAAAJ&hl=en)

@@ -1,146 +1,336 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chenyu Wang - Personal Website</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Chenyu Wang is an Electrical and Computer Engineering PhD student at Harvard University working on AI agents, computer systems, and architecture.">
+    <meta name="theme-color" content="#f5f2ec">
+    <meta property="og:title" content="Chenyu Wang — Harvard PhD Student">
+    <meta property="og:description" content="Research at the intersection of artificial intelligence and computer systems.">
+    <meta property="og:image" content="assets/images/profile.jpg">
+    <title>Chenyu Wang — Harvard PhD Student</title>
     <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="home.css">
 </head>
-<body>
-    <nav class="navbar">
-        <div class="container">
-            <div class="nav-brand">
-                <h2>Chenyu Wang</h2>
-            </div>
-            <ul class="nav-menu">
-                <li><a href="index.html" class="active">Home</a></li>
-                <li><a href="papers.html">Papers</a></li>
-                <li><a href="publications.html">Publications</a></li>
-                <li><a href="blog.html">Blog</a></li>
-            </ul>
-            <div class="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
+<body class="home-page">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <header class="site-header">
+        <div class="header-inner">
+            <a class="wordmark" href="#top" aria-label="Chenyu Wang, home">
+                <span class="wordmark-mark" aria-hidden="true">CW</span>
+                <span>Chenyu Wang</span>
+            </a>
+            <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+                <span class="sr-only">Toggle navigation</span>
+                <span></span><span></span>
+            </button>
+            <nav id="site-nav" class="site-nav" aria-label="Primary navigation">
+                <a href="#research">Research</a>
+                <a href="#publications">Publications</a>
+                <a href="#experience">Experience</a>
+                <a href="#resources">Resources</a>
+            </nav>
         </div>
-    </nav>
+    </header>
 
-    <main>
-        <section class="hero">
-            <div class="container">
-                <div class="hero-content">
-                    <div class="hero-text">
-                        <h1><span class="highlight">Chenyu Wang</span></h1>
-                        <p class="bio">
-                            I am a researcher at Harvard University. I work on AI and systems, and am envisioning Autonomous AI agents for system engineering.
-                        </p>
-                        <p class="bio">
-                            This semester, I'm Course Staff for <a href="https://harvard-edge.github.io/cs249r_fall2025/" target="_blank" style="color: #2563eb; text-decoration: underline; font-weight: 600;">CS249r: Agentic AI for Computer Systems Design</a> with Professor Vijay Janapa Reddi.
-                        </p>
-                        <p class="bio">
-                            I curated an <a href="papers.html" style="color: #2563eb; text-decoration: underline; font-weight: 600;">AI for Hardware/System papers collection</a>, a small contribution to the community. Feel free to explore and share!
-                        </p>
-                        <div class="social-links">
-                            <a href="https://scholar.google.com/citations?user=QI96hfoAAAAJ&hl=en" target="_blank" aria-label="Google Scholar">
-                                <i class="fas fa-graduation-cap"></i>
-                            </a>
-                            <a href="mailto:chenyu_wang@seas.harvard.edu" aria-label="Email">
-                                <i class="fas fa-envelope"></i>
-                            </a>
-                        </div>
+    <main id="main-content">
+        <section class="hero" id="top" aria-labelledby="hero-title">
+            <div class="hero-main">
+                <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> Harvard University · PhD Student</p>
+                <h1 id="hero-title">Chenyu Wang</h1>
+                <p class="hero-lede">Building intelligent agents that can reason about, design, and optimize computer systems.</p>
+                <p class="hero-copy">
+                    I am an Electrical and Computer Engineering PhD student at Harvard University working at the intersection of
+                    <strong>artificial intelligence</strong> and <strong>computer systems</strong>.
+                    My research explores autonomous AI agents for system engineering, domain-specific
+                    foundation models for architecture, and efficient systems for compositional AI.
+                    I work with <a href="https://vijay.seas.harvard.edu/" target="_blank" rel="noopener">Prof. Vijay Janapa Reddi</a>
+                    and <a href="https://yilundu.github.io/" target="_blank" rel="noopener">Prof. Yilun Du</a>.
+                </p>
+                <div class="topic-list" aria-label="Research areas">
+                    <span>AI for Systems</span>
+                    <span>Agentic AI</span>
+                    <span>Computer Architecture</span>
+                    <span>Efficient AI</span>
+                </div>
+                <div class="primary-links">
+                    <a class="button button-primary" href="mailto:chenyu_wang@seas.harvard.edu">Email me <span aria-hidden="true">↗</span></a>
+                    <a class="button" href="Chenyu_Wang_Resume.pdf" target="_blank" rel="noopener">Resume <span aria-hidden="true">↗</span></a>
+                    <a class="button" href="https://scholar.google.com/citations?user=QI96hfoAAAAJ&hl=en" target="_blank" rel="noopener">Google Scholar <span aria-hidden="true">↗</span></a>
+                    <a class="button" href="https://www.linkedin.com/in/chenyu-wang-49866a28a/" target="_blank" rel="noopener">LinkedIn <span aria-hidden="true">↗</span></a>
+                </div>
+            </div>
+
+            <aside class="profile-panel" aria-label="Profile summary">
+                <img src="assets/images/profile.jpg" width="260" height="260" alt="Portrait of Chenyu Wang">
+                <div class="profile-meta">
+                    <p><span>Based in</span> Cambridge, Massachusetts</p>
+                    <p><span>Affiliation</span> Harvard ECE / SEAS</p>
+                    <p><span>Contact</span> <a href="mailto:chenyu_wang@seas.harvard.edu">chenyu_wang@seas.harvard.edu</a></p>
+                </div>
+                <dl class="metrics" aria-label="Google Scholar metrics">
+                    <div><dt id="citations-count">71</dt><dd>Citations</dd></div>
+                    <div><dt id="hindex-count">3</dt><dd>h-index</dd></div>
+                    <div><dt id="i10-count">3</dt><dd>i10-index</dd></div>
+                </dl>
+            </aside>
+        </section>
+
+        <section class="content-section" id="research" aria-labelledby="research-title">
+            <header class="section-heading">
+                <p class="section-index">01</p>
+                <h2 id="research-title">Research</h2>
+            </header>
+            <div class="section-body">
+                <p class="section-intro">I study how AI can become a capable engineering collaborator—and how the computing stack should change when intelligence is composed from many specialized models and tools.</p>
+                <div class="research-grid">
+                    <article>
+                        <p class="research-number">A</p>
+                        <h3>Agents for system design</h3>
+                        <p>Foundation models and simulator-in-the-loop agents that reason over architecture, hardware/software co-design, and system optimization.</p>
+                    </article>
+                    <article>
+                        <p class="research-number">B</p>
+                        <h3>Compositional intelligence</h3>
+                        <p>Methods and systems that coordinate specialized small models to improve reasoning quality without relying on ever-larger monolithic models.</p>
+                    </article>
+                    <article>
+                        <p class="research-number">C</p>
+                        <h3>Efficient AI systems</h3>
+                        <p>Algorithm–architecture co-design, processing-in-memory, and efficient inference for emerging neural workloads.</p>
+                    </article>
+                </div>
+
+                <div class="news-block">
+                    <div class="subsection-title">
+                        <h3>Recent</h3>
+                        <span>2026</span>
                     </div>
-                    <div class="hero-image">
-                        <img src="assets/images/profile.jpg" alt="Chenyu Wang" class="profile-img">
-                    </div>
+                    <ul class="news-list">
+                        <li><time datetime="2026-07">Jul</time><span><strong>ArchEval</strong> released and presented at the Architecture 2.0 Workshop at ISCA 2026.</span></li>
+                        <li><time datetime="2026-06">Jun</time><span><strong>AgentDSE</strong> presented at the MLArchSys Workshop at ISCA 2026.</span></li>
+                        <li><time datetime="2026-06">Jun</time><span><strong>Economy of Minds</strong> released as a preprint.</span></li>
+                        <li><time datetime="2026-06">Jun</time><span><strong>QuArch</strong> accepted to ICML 2026.</span></li>
+                        <li><time datetime="2026-01">Jan</time><span><strong>SLM-MUX</strong> accepted to ICLR 2026.</span></li>
+                        <li><time datetime="2026">2026</time><span><strong>Compositional AI Beyond LLMs</strong> published at ASPLOS 2026.</span></li>
+                        <li><time datetime="2026">2026</time><span>Started my PhD at Harvard University.</span></li>
+                    </ul>
                 </div>
             </div>
         </section>
 
-        <section class="research-interests">
-            <div class="container">
-                <h2 class="section-title">Research Interests</h2>
-                <div class="interests-grid">
-                    <div class="interest-card">
-                        <div class="icon-wrapper">
-                            <i class="fas fa-brain"></i>
-                        </div>
-                        <h3>Artificial Intelligence</h3>
+        <section class="content-section" id="publications" aria-labelledby="publications-title">
+            <header class="section-heading">
+                <p class="section-index">02</p>
+                <h2 id="publications-title">Publications</h2>
+                <p class="section-note">* equal contribution</p>
+            </header>
+            <div class="section-body publication-list">
+                <article class="publication featured">
+                    <div class="pub-meta"><span class="pub-year">2026</span><span class="venue venue-muted">arXiv</span></div>
+                    <div class="pub-content">
+                        <h3>ArchEval: Measuring AI Agents as Computer Architects</h3>
+                        <p class="authors"><strong>C. Wang*</strong>, Z. Wan*, J. Ma, S. Prakash, Z. Qi, H. Do, A. Cheng, A. Tschand, J. Shi, Y. Du, V. J. Reddi</p>
+                        <p class="pub-description">A benchmark and multi-simulator platform that measures whether AI agents can analyze workloads, optimize designs, and exercise architectural judgment.</p>
+                        <div class="pub-links"><a href="https://arxiv.org/abs/2607.03601" target="_blank" rel="noopener">Paper ↗</a><a href="https://harvard-edge.github.io/isca-26-arch-2-workshop/" target="_blank" rel="noopener">Workshop ↗</a></div>
                     </div>
-                    <div class="interest-card">
-                        <div class="icon-wrapper">
-                            <i class="fas fa-microchip"></i>
-                        </div>
-                        <h3>Computer Architecture</h3>
-                    </div>
-                    <div class="interest-card">
-                        <div class="icon-wrapper">
-                            <i class="fas fa-rocket"></i>
-                        </div>
-                        <h3>AI for System</h3>
-                        <p style="font-size: 0.9rem; margin-top: 0.5rem;">
-                            <a href="https://ieeexplore.ieee.org/document/10247808" target="_blank" style="color: #2563eb; text-decoration: underline;">My Professor's Vision</a>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
+                </article>
 
-        <section class="recent-work">
-            <div class="container">
-                <h2 class="section-title">Recent Works</h2>
-                <div class="work-preview">
-                    <div class="work-item">
+                <article class="publication featured">
+                    <div class="pub-meta"><span class="pub-year">2026</span><span class="venue">MLArchSys</span></div>
+                    <div class="pub-content">
+                        <h3>AgentDSE: Reasoning-Augmented Architectural Design Space Exploration</h3>
+                        <p class="authors"><strong>C. Wang*</strong>, J. C. Shi*, D. Kong, D. S. Boning, Z. Wan, Y. Du, V. J. Reddi</p>
+                        <p class="pub-description">A simulator-in-the-loop coding agent that reaches strong designs with up to two orders of magnitude fewer evaluations.</p>
+                        <div class="pub-links"><a href="https://arxiv.org/abs/2606.21836" target="_blank" rel="noopener">Paper ↗</a></div>
+                    </div>
+                </article>
+
+                <article class="publication">
+                    <div class="pub-meta"><span class="pub-year">2026</span><span class="venue venue-muted">arXiv</span></div>
+                    <div class="pub-content">
+                        <h3>Economy of Minds: Emerging Multi-Agent Intelligence with Economic Interactions</h3>
+                        <p class="authors">Z. Qi, H. Su, A. Qu, <strong>C. Wang</strong>, Y. Yao, H. Zheng, K. Chattopadhyay, et al., Y. Du</p>
+                        <p class="pub-description">Decentralized economic incentives let populations of weak agents self-organize, specialize, and evolve into stronger collective intelligence.</p>
+                        <div class="pub-links"><a href="https://arxiv.org/abs/2606.02859" target="_blank" rel="noopener">Paper ↗</a><a href="https://zhentingqi.github.io/internal/projects/EoM/" target="_blank" rel="noopener">Project ↗</a></div>
+                    </div>
+                </article>
+
+                <article class="publication featured">
+                    <div class="pub-meta"><span class="pub-year">2026</span><span class="venue">ICML</span></div>
+                    <div class="pub-content">
+                        <h3>QuArch: A Benchmark for Evaluating LLM Reasoning in Computer Architecture</h3>
+                        <p class="authors">S. Prakash, A. Cheng, M. Mazumder, A. Tschand, V. Gohil, et al., <strong>C. Wang</strong>, et al., V. J. Reddi</p>
+                        <p class="pub-description">The first expert-validated benchmark for evaluating LLM knowledge and higher-order reasoning in computer architecture.</p>
+                        <div class="pub-links"><a href="https://arxiv.org/abs/2510.22087" target="_blank" rel="noopener">Paper ↗</a><a href="https://quarch.ai/" target="_blank" rel="noopener">Project ↗</a><a href="https://openreview.net/forum?id=yU6X1XZl8t" target="_blank" rel="noopener">OpenReview ↗</a></div>
+                    </div>
+                </article>
+
+                <article class="publication featured">
+                    <div class="pub-meta"><span class="pub-year">2026</span><span class="venue">ICLR</span></div>
+                    <div class="pub-content">
                         <h3>SLM-MUX: Orchestrating Small Language Models for Reasoning</h3>
-                        <p class="work-meta"><strong>C Wang*</strong>, Z Wan*, H Kang, E Chen, Z Xie, T Krishna, V Janapa Reddi, Y Du</p>
-                        <p class="work-meta">Harvard University, Georgia Tech, Stanford University, 2025</p>
-                        <p>A multi-model architecture that effectively coordinates multiple small language models, achieving up to 13.4% improvement on MATH and outperforming Qwen 2.5 72B with just two SLMs.</p>
-                        <div class="pub-links" style="margin-top: 0.5rem;">
-                            <a href="https://slm-mux.github.io/" target="_blank" class="pub-link" style="display: inline-block; color: #2563eb; text-decoration: none; font-weight: 500;">
-                                <i class="fas fa-globe"></i> Project Page
-                            </a>
-                        </div>
+                        <p class="authors"><strong>C. Wang*</strong>, Z. Wan*, H. Kang, E. Chen, Z. Xie, T. Krishna, V. J. Reddi, Y. Du</p>
+                        <p class="pub-description">A training-free orchestration method that lets two small models match or outperform a 72B model on reasoning tasks.</p>
+                        <div class="pub-links"><a href="https://arxiv.org/abs/2510.05077" target="_blank" rel="noopener">Paper ↗</a><a href="https://slm-mux.github.io/" target="_blank" rel="noopener">Project ↗</a><a href="https://openreview.net/forum?id=317bcKF4zv" target="_blank" rel="noopener">OpenReview ↗</a></div>
                     </div>
-                    <div class="work-item">
+                </article>
+
+                <article class="publication">
+                    <div class="pub-meta"><span class="pub-year">2026</span><span class="venue venue-muted">arXiv</span></div>
+                    <div class="pub-content">
+                        <h3>GenAI for Systems: Recurring Challenges and Design Principles from Software to Silicon</h3>
+                        <p class="authors">A. Tschand*, <strong>C. Wang*</strong>, Z. Wan*, A. Cheng, et al., V. J. Reddi</p>
+                        <p class="pub-description">A cross-stack synthesis of more than 275 papers spanning software, architecture, and chip design.</p>
+                        <div class="pub-links"><a href="https://arxiv.org/abs/2602.15241" target="_blank" rel="noopener">Paper ↗</a></div>
+                    </div>
+                </article>
+
+                <article class="publication">
+                    <div class="pub-meta"><span class="pub-year">2026</span><span class="venue">ASPLOS</span></div>
+                    <div class="pub-content">
+                        <h3>Compositional AI Beyond LLMs: System Implications of Neuro-Symbolic-Probabilistic Architectures</h3>
+                        <p class="authors">Z. Wan, H. Yang, J. Qian, R. Raj, J. Park, <strong>C. Wang</strong>, A. Raychowdhury, T. Krishna</p>
+                        <div class="pub-links"><a href="https://doi.org/10.1145/3760250.3762235" target="_blank" rel="noopener">Paper ↗</a></div>
+                    </div>
+                </article>
+
+                <article class="publication">
+                    <div class="pub-meta"><span class="pub-year">2024</span><span class="venue">DAC</span></div>
+                    <div class="pub-content">
                         <h3>EPIM: Efficient Processing-In-Memory Accelerators based on Epitome</h3>
-                        <p class="work-meta"><strong>C Wang</strong>, Z Dong, D Zhou, Z Zhu, Y Wang, J Feng, K Keutzer</p>
-                        <p class="work-meta">Design Automation Conference (DAC), 2024 • <strong>3 citations</strong></p>
-                        <p>Developed a novel processing-in-memory architecture for efficient neural network acceleration, demonstrating significant improvements in energy efficiency and throughput.</p>
+                        <p class="authors"><strong>C. Wang*</strong>, Z. Dong*, D. Zhou*, Z. Zhu, Y. Wang, J. Feng, K. Keutzer</p>
+                        <div class="pub-links"><a href="https://arxiv.org/abs/2311.07620" target="_blank" rel="noopener">Paper ↗</a><a href="https://doi.org/10.1145/3649329.3657377" target="_blank" rel="noopener">DOI ↗</a></div>
                     </div>
-                    <div class="work-item">
+                </article>
+
+                <article class="publication">
+                    <div class="pub-meta"><span class="pub-year">2024</span><span class="venue venue-muted">arXiv</span></div>
+                    <div class="pub-content">
                         <h3>Evaluating Zero-Shot Long-Context LLM Compression</h3>
-                        <p class="work-meta"><strong>C Wang</strong>, Y Wang, K Li</p>
-                        <p class="work-meta">arXiv preprint, 2024 • <strong>1 citation</strong></p>
-                        <p>Comprehensive evaluation of compression techniques for large language models with extended context windows, addressing practical deployment challenges.</p>
+                        <p class="authors"><strong>C. Wang</strong>, Y. Wang, K. Li</p>
+                        <div class="pub-links"><a href="https://arxiv.org/abs/2406.06773" target="_blank" rel="noopener">Paper ↗</a></div>
                     </div>
-                    <div class="work-item">
-                        <h3>Gibbon: Efficient co-exploration of NN model and processing-in-memory architecture</h3>
-                        <p class="work-meta">H Sun, <strong>C Wang</strong>, Z Zhu, X Ning, G Dai, H Yang, Y Wang</p>
-                        <p class="work-meta">Design, Automation & Test in Europe Conference (DATE), 2022 • <strong>20 citations</strong></p>
-                        <p>Designed an efficient co-exploration framework for jointly optimizing neural network models and processing-in-memory architectures, achieving state-of-the-art performance.</p>
+                </article>
+
+                <article class="publication">
+                    <div class="pub-meta"><span class="pub-year">2023</span><span class="venue">IEEE TCAD</span></div>
+                    <div class="pub-content">
+                        <h3>Gibbon: An Efficient Co-Exploration Framework of NN Model and Processing-In-Memory Architecture</h3>
+                        <p class="authors">H. Sun, Z. Zhu, <strong>C. Wang</strong>, X. Ning, G. Dai, H. Yang, Y. Wang</p>
+                        <div class="pub-links"><a href="https://doi.org/10.1109/TCAD.2023.3262201" target="_blank" rel="noopener">Paper ↗</a></div>
                     </div>
+                </article>
+
+                <article class="publication">
+                    <div class="pub-meta"><span class="pub-year">2023</span><span class="venue venue-muted">Preprint</span></div>
+                    <div class="pub-content">
+                        <h3>DeepGuiser: Learning to Disguise Neural Architectures for Impeding Adversarial Transfer Attacks</h3>
+                        <p class="authors">Y. Cai*, <strong>C. Wang*</strong>, Z. Zhou, X. Ning, H. Yang, Y. Wang</p>
+                        <div class="pub-links"><a href="https://openreview.net/forum?id=PArJcOptzg" target="_blank" rel="noopener">Paper ↗</a></div>
+                    </div>
+                </article>
+
+                <article class="publication">
+                    <div class="pub-meta"><span class="pub-year">2022</span><span class="venue">DATE</span></div>
+                    <div class="pub-content">
+                        <h3>Gibbon: Efficient Co-Exploration of NN Model and Processing-In-Memory Architecture</h3>
+                        <p class="authors">H. Sun*, <strong>C. Wang*</strong>, Z. Zhu, X. Ning, G. Dai, H. Yang, Y. Wang</p>
+                        <div class="pub-links"><a href="https://ieeexplore.ieee.org/document/9774605" target="_blank" rel="noopener">Paper ↗</a></div>
+                    </div>
+                </article>
+
+                <a class="scholar-row" href="https://scholar.google.com/citations?user=QI96hfoAAAAJ&hl=en" target="_blank" rel="noopener">
+                    <span>Full publication record and current citation counts</span><span>Google Scholar ↗</span>
+                </a>
+            </div>
+        </section>
+
+        <section class="content-section" id="experience" aria-labelledby="experience-title">
+            <header class="section-heading">
+                <p class="section-index">03</p>
+                <h2 id="experience-title">Experience</h2>
+            </header>
+            <div class="section-body experience-grid">
+                <div>
+                    <h3 class="column-title">Education &amp; research</h3>
+                    <ol class="timeline">
+                        <li>
+                            <div><strong>Harvard University</strong><span>Cambridge, MA</span></div>
+                            <p>PhD in Electrical and Computer Engineering · advisors: Vijay Janapa Reddi and Yilun Du</p>
+                            <time>Fall 2026 — expected 2030</time>
+                        </li>
+                        <li>
+                            <div><strong>Harvard University</strong><span>Cambridge, MA</span></div>
+                            <p>Research Assistant · AI for computer systems and architecture</p>
+                            <time>Jun 2025 — present</time>
+                        </li>
+                        <li>
+                            <div><strong>Princeton University</strong><span>Princeton, NJ</span></div>
+                            <p>M.S.E. in Electrical and Computer Engineering · Gordon Wu Fellow</p>
+                            <time>2023 — 2025</time>
+                        </li>
+                        <li>
+                            <div><strong>Tsinghua University</strong><span>Beijing, China</span></div>
+                            <p>B.E. in Electronic Engineering · Outstanding Graduate</p>
+                            <time>2019 — 2023</time>
+                        </li>
+                    </ol>
                 </div>
-                <div class="cta-container">
-                    <a href="publications.html" class="btn-primary">View All Publications</a>
+                <div>
+                    <h3 class="column-title">Teaching &amp; community</h3>
+                    <ol class="timeline">
+                        <li>
+                            <div><strong>Architecture 2.0 Workshop</strong><span>ASPLOS</span></div>
+                            <p>Organizing team · AI for Computing Systems Design</p>
+                            <time>2026</time>
+                        </li>
+                        <li>
+                            <div><strong>CS249r: Agentic AI for Systems Design</strong><span>Harvard</span></div>
+                            <p>Teaching Fellow / Course Staff</p>
+                            <time>Fall 2025</time>
+                        </li>
+                        <li>
+                            <div><strong>SML 312: Research Projects in Data Science</strong><span>Princeton</span></div>
+                            <p>Teaching Assistant</p>
+                            <time>2024 — 2025</time>
+                        </li>
+                        <li>
+                            <div><strong>Conference reviewing</strong><span>Service</span></div>
+                            <p>Reviewer for NeurIPS, ICML, and COLM</p>
+                            <time>Current</time>
+                        </li>
+                    </ol>
                 </div>
+            </div>
+        </section>
+
+        <section class="content-section resource-section" id="resources" aria-labelledby="resources-title">
+            <header class="section-heading">
+                <p class="section-index">04</p>
+                <h2 id="resources-title">Resources</h2>
+            </header>
+            <div class="section-body">
+                <a class="resource-link" href="papers.html">
+                    <div>
+                        <p class="resource-kicker">Community resource</p>
+                        <h3>AI for Hardware &amp; Systems Paper Collection</h3>
+                        <p>A curated, searchable reading list spanning AI for architecture, EDA, compilers, systems, and hardware design.</p>
+                    </div>
+                    <span class="resource-arrow" aria-hidden="true">↗</span>
+                </a>
             </div>
         </section>
     </main>
 
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 Chenyu Wang. All rights reserved.</p>
-        </div>
+    <footer class="site-footer">
+        <p>© <span id="current-year">2026</span> Chenyu Wang</p>
+        <p>Designed for reading, not clicking.</p>
+        <a href="#top">Back to top ↑</a>
     </footer>
 
-    <script type="module" src="assets/js/pageview-counter.js"></script>
     <script src="assets/js/scholar-metrics.js"></script>
-    <script src="script.js"></script>
+    <script src="home.js"></script>
 </body>
 </html>
-
