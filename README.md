@@ -38,6 +38,14 @@ There is no build step. GitHub Pages can serve the repository directly.
 - Replace `Chenyu_Wang_Resume.pdf` to update the resume linked from the homepage.
 - The searchable reading list is generated from the JSON files in `_data/`.
 
+## Publication updates
+
+The `Monthly Publication Check` GitHub Actions workflow runs on the first day of
+each month. It checks arXiv for recent papers authored by Chenyu Wang, verifies
+identity using trusted co-authors from the existing publication record, skips
+duplicate titles, and adds verified new papers to the appropriate year on the
+homepage. The workflow can also be run manually from the Actions tab.
+
 ## Contact
 
 - Email: chenyu_wang@seas.harvard.edu
