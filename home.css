@@ -176,13 +176,11 @@ h1 {
 
 .news-list,
 .compact-list,
-.record-list,
 .publication-list {
     margin: 0;
 }
 
-.news-list,
-.record-list {
+.news-list {
     padding: 0;
     list-style: none;
 }
@@ -291,42 +289,6 @@ h1 {
     font-size: 13px;
 }
 
-.two-column {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 50px;
-}
-
-.two-column > div > h3 {
-    margin-bottom: 9px;
-    padding-bottom: 6px;
-    border-bottom: 1px solid #bbb;
-    font-weight: 600;
-}
-
-.record-list li {
-    padding: 9px 0;
-    border-bottom: 1px solid #eee;
-}
-
-.record-list li > div {
-    display: flex;
-    justify-content: space-between;
-    gap: 15px;
-}
-
-.record-list time {
-    color: var(--muted);
-    font-size: 12px;
-    text-align: right;
-}
-
-.record-list p {
-    margin: 2px 0 0;
-    color: var(--muted);
-    font-size: 13px;
-}
-
 footer {
     padding: 20px 0 34px;
     color: var(--muted);
@@ -372,10 +334,6 @@ footer p {
         grid-column: 1 / -1;
     }
 
-    .two-column {
-        grid-template-columns: 1fr;
-        gap: 26px;
-    }
 }
 
 @media (max-width: 480px) {
