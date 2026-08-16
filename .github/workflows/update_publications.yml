@@ -1,0 +1,38 @@
+name: Monthly Publication Check
+
+on:
+  schedule:
+    - cron: '17 6 1 * *' # first day of each month at 06:17 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-publications:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the site
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Check arXiv for new publications
+        run: python scripts/update_publications.py
+
+      - name: Commit verified additions
+        run: |
+          if git diff --quiet -- index.html; then
+            echo "No publication changes to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "chore: add newly published papers"
+          git push
