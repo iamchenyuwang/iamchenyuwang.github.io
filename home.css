@@ -1,9 +1,9 @@
 :root {
-    --text: #242424;
-    --muted: #666;
-    --line: #d8d8d8;
-    --link: #174f82;
-    --link-hover: #8c1d40;
+    --text: #202124;
+    --muted: #687078;
+    --line: #e1e4e7;
+    --link: #24669c;
+    --link-hover: #174c77;
     --width: 980px;
 }
 
@@ -20,7 +20,7 @@ body {
     margin: 0;
     color: var(--text);
     background: #fff;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
     font-size: 15px;
     line-height: 1.55;
     -webkit-font-smoothing: antialiased;
@@ -71,9 +71,8 @@ a:focus {
 
 .site-name {
     color: var(--text);
-    font-family: Georgia, "Times New Roman", serif;
-    font-size: 19px;
-    font-weight: 700;
+    font-size: 18px;
+    font-weight: 600;
 }
 
 .site-name:hover {
@@ -119,14 +118,15 @@ p {
 h1,
 h2,
 h3 {
-    font-family: Georgia, "Times New Roman", serif;
+    font-family: inherit;
 }
 
 h1 {
     margin-bottom: 5px;
-    font-size: 32px;
-    font-weight: 400;
+    font-size: 30px;
+    font-weight: 600;
     line-height: 1.2;
+    letter-spacing: -.02em;
 }
 
 .position {
@@ -162,8 +162,8 @@ h1 {
 
 .section h2 {
     margin-bottom: 18px;
-    font-size: 22px;
-    font-weight: 400;
+    font-size: 20px;
+    font-weight: 600;
 }
 
 .section h3 {
@@ -239,7 +239,7 @@ h1 {
 .year-group > h3 {
     margin: 2px 0 0;
     color: var(--muted);
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: inherit;
     font-size: 13px;
     font-weight: 400;
 }
@@ -257,13 +257,14 @@ h1 {
 }
 
 .paper-title {
-    font-family: Georgia, "Times New Roman", serif;
-    font-size: 16px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
     line-height: 1.35;
 }
 
 .paper-title a {
-    color: #183b5b;
+    color: #245b87;
 }
 
 .authors,
@@ -300,7 +301,7 @@ h1 {
     margin-bottom: 9px;
     padding-bottom: 6px;
     border-bottom: 1px solid #bbb;
-    font-weight: 400;
+    font-weight: 600;
 }
 
 .record-list li {
