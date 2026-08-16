@@ -53,6 +53,13 @@ To run the same review manually:
 ./scripts/run_monthly_publication_agent.sh
 ```
 
+To install or refresh the server schedule (first day of every month at 14:17
+UTC), run:
+
+```bash
+./scripts/install_monthly_publication_cron.sh
+```
+
 ## Contact
 
 - Email: chenyu_wang@seas.harvard.edu
