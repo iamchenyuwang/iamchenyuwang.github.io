@@ -1,0 +1,60 @@
+name: One-time Computer Science program update
+
+on:
+  schedule:
+    # 2026-09-16 00:17 in Boston (EDT), just after September 15.
+    - cron: '17 4 16 9 *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-program:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the site
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Update the degree program
+        shell: bash
+        run: |
+          if [[ "$(date -u +%F)" < "2026-09-16" ]]; then
+            echo "The program change is not active yet."
+            exit 0
+          fi
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path("index.html")
+          document = path.read_text(encoding="utf-8")
+          old = "PhD Student in Electrical and Computer Engineering<br>Harvard University"
+          new = "PhD Student in Computer Science<br>Harvard University"
+
+          if document.count(old) != 1:
+              raise SystemExit("Expected to find the current degree-program text exactly once.")
+
+          path.write_text(document.replace(old, new), encoding="utf-8")
+          PY
+
+          # This is a one-time migration. Remove the workflow in the same commit
+          # so it cannot run again in a later year.
+          rm .github/workflows/update_degree_program.yml
+
+      - name: Commit and publish the update
+        shell: bash
+        run: |
+          if git diff --quiet; then
+            echo "No degree-program change to publish."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html .github/workflows/update_degree_program.yml
+          git commit -m "update PhD program to Computer Science"
+          git pull --rebase origin main
+          git push origin HEAD:main
