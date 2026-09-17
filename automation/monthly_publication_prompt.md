@@ -11,8 +11,8 @@ output of an author-name search or a repository script as proof.
 ## Identity and evidence rules
 
 - The author must be the Chenyu Wang whose homepage is this repository and who
-  is a Harvard PhD student. Read `index.html` and, when useful,
-  `Chenyu_Wang_Resume.pdf` to understand the existing research record.
+  is a Harvard PhD student. Read `index.html` to understand the existing research
+  record.
 - There are many researchers named Chenyu Wang. Prefer missing a paper over
   adding another person's paper.
 - Search current primary sources on the web, including arXiv, official venue or

@@ -10,7 +10,6 @@ index.html          # Main academic profile and publication record
 home.css            # Homepage layout and responsive styles
 home.js             # Mobile navigation and active-section behavior
 assets/             # Profile image, PDFs, and other static files
-Chenyu_Wang_Resume.pdf # Current one-page resume
 ```
 
 Legacy URLs `publications.html` and `blog.html` redirect into the single-page site so
@@ -32,7 +31,6 @@ There is no build step. GitHub Pages can serve the repository directly.
 
 - Edit profile, news, publications, and experience in `index.html`.
 - Replace `assets/images/profile.jpg` to update the portrait.
-- Replace `Chenyu_Wang_Resume.pdf` to update the resume linked from the homepage.
 ## Publication updates
 
 A local monthly cron job starts a fresh Codex review using
