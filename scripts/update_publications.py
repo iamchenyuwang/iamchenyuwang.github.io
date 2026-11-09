@@ -158,7 +158,7 @@ def render_paper(paper: Paper) -> str:
         "                    <li>\n"
         f'                        <p class="paper-title"><a href="{paper.url}" target="_blank" rel="noopener">{html.escape(paper.title)}</a></p>\n'
         f'                        <p class="authors">{format_authors(paper.authors)}</p>\n'
-        f'                        <p class="venue">arXiv preprint, {paper.year}. <a href="{paper.url}" target="_blank" rel="noopener">[paper]</a></p>\n'
+        f'                        <p class="venue">Preprint, {paper.year}. <a href="{paper.url}" target="_blank" rel="noopener">paper</a></p>\n'
         "                    </li>\n"
     )
 

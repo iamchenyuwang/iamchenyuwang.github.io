@@ -30,14 +30,19 @@ output of an author-name search or a repository script as proof.
 
 ## Editing and publishing rules
 
-- If there is no high-confidence missing paper, do not modify any files and do
-  not create a commit.
-- If there is a high-confidence missing paper, edit only the publication record
-  in `index.html`. Preserve the existing plain, dense academic design and its
+- Also check whether any paper already listed as a preprint or workshop paper
+  has since been accepted or published at a new venue (for example, an arXiv
+  comment such as "NeurIPS 2026" or an official accepted-papers list). When a
+  primary source confirms it, update that entry's venue line and add a dated
+  News item in the existing style.
+- If there is no high-confidence missing paper or venue update, do not modify
+  any files and do not create a commit.
+- If there is a high-confidence missing paper or venue update, edit only the
+  publication record and News list in `index.html`. Preserve the existing light academic design and its
   current HTML conventions. Do not redesign the site or change unrelated copy.
 - Avoid duplicates by comparing normalized titles and canonical URLs.
 - Review the rendered HTML or run a suitable local check before publishing.
-- Inspect the final diff. Commit only the intended publication addition with a
+- Inspect the final diff. Commit only the intended publication changes with a
   concise commit message, then push it to `origin/main`, as the owner has
   explicitly authorized direct publication updates.
 - After pushing, use the available GitHub tooling to check the Pages deployment

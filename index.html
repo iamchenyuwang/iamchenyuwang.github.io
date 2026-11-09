@@ -6,10 +6,17 @@
     <meta name="description" content="Chenyu Wang is a Harvard PhD student interested in AI for science and engineering, computer architecture, systems, and hardware design.">
     <meta property="og:title" content="Chenyu Wang | Harvard University">
     <meta property="og:description" content="Research interests in AI for science and engineering, computer architecture, systems, and hardware design.">
-    <meta property="og:image" content="assets/images/profile.jpg">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://iamchenyuwang.github.io/">
+    <meta property="og:image" content="https://iamchenyuwang.github.io/assets/images/profile.jpg">
+    <meta name="twitter:card" content="summary">
+    <meta name="theme-color" content="#f8fafc">
     <title>Chenyu Wang | Harvard University</title>
     <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
-    <link rel="stylesheet" href="home.css?v=20260816-4">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
+    <link rel="stylesheet" href="home.css?v=20261109-1">
 </head>
 <body>
     <a class="skip-link" href="#content">Skip to main content</a>
@@ -18,6 +25,7 @@
         <div class="page-width header-inner">
             <a class="site-name" href="#top">Chenyu Wang</a>
             <nav aria-label="Primary navigation">
+                <a href="#news">News</a>
                 <a href="#publications">Publications</a>
                 <a href="#service">Service</a>
             </nav>
@@ -26,11 +34,11 @@
 
     <main id="content" class="page-width">
         <section class="profile" id="top" aria-labelledby="profile-name">
-            <img class="profile-photo" src="assets/images/profile.jpg" width="190" height="235" alt="Chenyu Wang">
+            <img class="profile-photo" src="assets/images/profile.jpg?v=20261109" width="220" height="275" alt="Portrait of Chenyu Wang">
             <div class="profile-text">
                 <h1 id="profile-name">Chenyu Wang</h1>
                 <p class="position">PhD Student in Computer Science<br>Harvard University</p>
-                <p>
+                <p class="bio">
                     I am interested in AI for science and engineering, computer architecture, systems, and hardware
                     design. I would be happy to connect with others who share these interests. I am advised by
                     <a href="https://vijay.seas.harvard.edu/" target="_blank" rel="noopener">Prof. Vijay Janapa Reddi</a>
@@ -38,22 +46,21 @@
                     Before Harvard, I received my M.S.E. from Princeton University and my B.E. from Tsinghua University.
                 </p>
                 <p class="contact-links">
-                    <span class="email-text">chenyu_wang [at] seas [dot] harvard [dot] edu</span>
-                    <span>·</span>
                     <a href="https://scholar.google.com/citations?user=QI96hfoAAAAJ&hl=en" target="_blank" rel="noopener">Google Scholar</a>
-                    <span>·</span>
                     <a href="https://www.linkedin.com/in/chenyu-wang-49866a28a/" target="_blank" rel="noopener">LinkedIn</a>
                 </p>
-                <p class="address">Cambridge, Massachusetts</p>
+                <p class="email-line"><span class="email-text">chenyu_wang [at] seas [dot] harvard [dot] edu</span><span class="address">Cambridge, Massachusetts</span></p>
             </div>
         </section>
 
-        <section class="section" aria-labelledby="news-title">
+        <section class="section" id="news" aria-labelledby="news-title">
             <h2 id="news-title">News</h2>
             <ul class="news-list">
+                <li><time datetime="2026-09">Sep 2026</time><span><a href="https://arxiv.org/abs/2606.02859" target="_blank" rel="noopener">Economy of Minds</a> was accepted to NeurIPS 2026.</span></li>
                 <li><time datetime="2026-07">Jul 2026</time><span><a href="https://arxiv.org/abs/2607.03601" target="_blank" rel="noopener">ArchEval</a> was released and presented at the Architecture 2.0 Workshop at ISCA 2026.</span></li>
                 <li><time datetime="2026-06">Jun 2026</time><span><a href="https://arxiv.org/abs/2606.21836" target="_blank" rel="noopener">AgentDSE</a> was presented at the MLArchSys Workshop at ISCA 2026.</span></li>
                 <li><time datetime="2026-06">Jun 2026</time><span><a href="https://arxiv.org/abs/2510.22087" target="_blank" rel="noopener">QuArch</a> was accepted to ICML 2026.</span></li>
+                <li><time datetime="2026-01">Jan 2026</time><span><a href="https://doi.org/10.1038/s41586-025-09962-4" target="_blank" rel="noopener">Humanity’s Last Exam</a> was published in Nature.</span></li>
                 <li><time datetime="2026-01">Jan 2026</time><span><a href="https://arxiv.org/abs/2510.05077" target="_blank" rel="noopener">SLM-MUX</a> was accepted to ICLR 2026.</span></li>
             </ul>
         </section>
@@ -70,37 +77,42 @@
                     <li>
                         <p class="paper-title"><a href="https://arxiv.org/abs/2607.03601" target="_blank" rel="noopener">ArchEval: Measuring AI Agents as Computer Architects</a></p>
                         <p class="authors"><strong>Chenyu Wang*</strong>, Zishen Wan*, Jeffrey Ma, Shvetank Prakash, Zhenting Qi, Haebin Do, Andy Cheng, Arya Tschand, Jiahe Shi, Yilun Du, Vijay Janapa Reddi</p>
-                        <p class="venue">Architecture 2.0 Workshop at ISCA, 2026. <a href="https://arxiv.org/abs/2607.03601" target="_blank" rel="noopener">[paper]</a></p>
+                        <p class="venue">Architecture 2.0 Workshop at ISCA, 2026. <a href="https://arxiv.org/abs/2607.03601" target="_blank" rel="noopener">paper</a></p>
                     </li>
                     <li>
                         <p class="paper-title"><a href="https://arxiv.org/abs/2606.21836" target="_blank" rel="noopener">AgentDSE: Reasoning-Augmented Architectural Design Space Exploration</a></p>
                         <p class="authors"><strong>Chenyu Wang*</strong>, Jiahe Caroline Shi*, David Kong, Duane S. Boning, Zishen Wan, Yilun Du, Vijay Janapa Reddi</p>
-                        <p class="venue">MLArchSys Workshop at ISCA, 2026. <a href="https://arxiv.org/abs/2606.21836" target="_blank" rel="noopener">[paper]</a></p>
+                        <p class="venue">MLArchSys Workshop at ISCA, 2026. <a href="https://arxiv.org/abs/2606.21836" target="_blank" rel="noopener">paper</a></p>
                     </li>
                     <li>
                         <p class="paper-title"><a href="https://arxiv.org/abs/2606.02859" target="_blank" rel="noopener">Economy of Minds: Emerging Multi-Agent Intelligence with Economic Interactions</a></p>
                         <p class="authors">Zhenting Qi, Huangyuan Su, Ao Qu, <strong>Chenyu Wang</strong>, Yu Yao, Han Zheng, Kushal Chattopadhyay, et al., Yilun Du</p>
-                        <p class="venue">Preprint, 2026. <a href="https://arxiv.org/abs/2606.02859" target="_blank" rel="noopener">[paper]</a> <a href="https://zhentingqi.github.io/internal/projects/EoM/" target="_blank" rel="noopener">[project]</a></p>
+                        <p class="venue">Conference on Neural Information Processing Systems (NeurIPS), 2026. <a href="https://arxiv.org/abs/2606.02859" target="_blank" rel="noopener">paper</a> <a href="https://zhentingqi.github.io/internal/projects/EoM/" target="_blank" rel="noopener">project</a></p>
                     </li>
                     <li>
                         <p class="paper-title"><a href="https://arxiv.org/abs/2510.22087" target="_blank" rel="noopener">QuArch: A Benchmark for Evaluating LLM Reasoning in Computer Architecture</a></p>
                         <p class="authors">Shvetank Prakash, Andrew Cheng, Mark Mazumder, Arya Tschand, Varun Gohil, et al., <strong>Chenyu Wang</strong>, et al., Vijay Janapa Reddi</p>
-                        <p class="venue">International Conference on Machine Learning (ICML), 2026. <a href="https://arxiv.org/abs/2510.22087" target="_blank" rel="noopener">[paper]</a> <a href="https://quarch.ai/" target="_blank" rel="noopener">[project]</a></p>
+                        <p class="venue">International Conference on Machine Learning (ICML), 2026. <a href="https://arxiv.org/abs/2510.22087" target="_blank" rel="noopener">paper</a> <a href="https://quarch.ai/" target="_blank" rel="noopener">project</a></p>
                     </li>
                     <li>
                         <p class="paper-title"><a href="https://arxiv.org/abs/2510.05077" target="_blank" rel="noopener">SLM-MUX: Orchestrating Small Language Models for Reasoning</a></p>
                         <p class="authors"><strong>Chenyu Wang*</strong>, Zishen Wan*, Hao Kang, Emma Chen, Zhiqiang Xie, Tushar Krishna, Vijay Janapa Reddi, Yilun Du</p>
-                        <p class="venue">International Conference on Learning Representations (ICLR), 2026. <a href="https://arxiv.org/abs/2510.05077" target="_blank" rel="noopener">[paper]</a> <a href="https://slm-mux.github.io/" target="_blank" rel="noopener">[project]</a></p>
+                        <p class="venue">International Conference on Learning Representations (ICLR), 2026. <a href="https://arxiv.org/abs/2510.05077" target="_blank" rel="noopener">paper</a> <a href="https://slm-mux.github.io/" target="_blank" rel="noopener">project</a></p>
                     </li>
                     <li>
                         <p class="paper-title"><a href="https://arxiv.org/abs/2602.15241" target="_blank" rel="noopener">GenAI for Systems: Recurring Challenges and Design Principles from Software to Silicon</a></p>
                         <p class="authors">Arya Tschand*, <strong>Chenyu Wang*</strong>, Zishen Wan*, Andrew Cheng, et al., Vijay Janapa Reddi</p>
-                        <p class="venue">Preprint, 2026. <a href="https://arxiv.org/abs/2602.15241" target="_blank" rel="noopener">[paper]</a></p>
+                        <p class="venue">Preprint, 2026. <a href="https://arxiv.org/abs/2602.15241" target="_blank" rel="noopener">paper</a></p>
                     </li>
                     <li>
                         <p class="paper-title"><a href="https://doi.org/10.1145/3760250.3762235" target="_blank" rel="noopener">Compositional AI Beyond LLMs: System Implications of Neuro-Symbolic-Probabilistic Architectures</a></p>
                         <p class="authors">Zishen Wan, Hanchen Yang, Jiayi Qian, Ritik Raj, Joongun Park, <strong>Chenyu Wang</strong>, Arijit Raychowdhury, Tushar Krishna</p>
-                        <p class="venue">ACM International Conference on Architectural Support for Programming Languages and Operating Systems (ASPLOS), 2026. <a href="https://doi.org/10.1145/3760250.3762235" target="_blank" rel="noopener">[paper]</a></p>
+                        <p class="venue">ACM International Conference on Architectural Support for Programming Languages and Operating Systems (ASPLOS), 2026. <a href="https://doi.org/10.1145/3760250.3762235" target="_blank" rel="noopener">paper</a></p>
+                    </li>
+                    <li>
+                        <p class="paper-title"><a href="https://arxiv.org/abs/2501.14249" target="_blank" rel="noopener">Humanity’s Last Exam</a></p>
+                        <p class="authors">Long Phan, Alice Gatti, Ziwen Han, Nathaniel Li, et al., <strong>Chenyu Wang</strong>, et al., Dan Hendrycks</p>
+                        <p class="venue">Nature, 2026. <a href="https://doi.org/10.1038/s41586-025-09962-4" target="_blank" rel="noopener">paper</a> <a href="https://arxiv.org/abs/2501.14249" target="_blank" rel="noopener">arXiv</a> <a href="https://lastexam.ai/" target="_blank" rel="noopener">project</a></p>
                     </li>
                 </ol>
             </div>
@@ -111,12 +123,12 @@
                     <li>
                         <p class="paper-title"><a href="https://arxiv.org/abs/2311.07620" target="_blank" rel="noopener">EPIM: Efficient Processing-In-Memory Accelerators based on Epitome</a></p>
                         <p class="authors"><strong>Chenyu Wang*</strong>, Zhen Dong*, Daquan Zhou*, Zhenhua Zhu, Yu Wang, Jiashi Feng, Kurt Keutzer</p>
-                        <p class="venue">Design Automation Conference (DAC), 2024. <a href="https://arxiv.org/abs/2311.07620" target="_blank" rel="noopener">[paper]</a></p>
+                        <p class="venue">Design Automation Conference (DAC), 2024. <a href="https://arxiv.org/abs/2311.07620" target="_blank" rel="noopener">paper</a></p>
                     </li>
                     <li>
                         <p class="paper-title"><a href="https://arxiv.org/abs/2406.06773" target="_blank" rel="noopener">Evaluating Zero-Shot Long-Context LLM Compression</a></p>
                         <p class="authors"><strong>Chenyu Wang</strong>, Yihan Wang, Kai Li</p>
-                        <p class="venue">Preprint, 2024. <a href="https://arxiv.org/abs/2406.06773" target="_blank" rel="noopener">[paper]</a></p>
+                        <p class="venue">Preprint, 2024. <a href="https://arxiv.org/abs/2406.06773" target="_blank" rel="noopener">paper</a></p>
                     </li>
                 </ol>
             </div>
@@ -127,12 +139,12 @@
                     <li>
                         <p class="paper-title"><a href="https://doi.org/10.1109/TCAD.2023.3262201" target="_blank" rel="noopener">Gibbon: An Efficient Co-Exploration Framework of NN Model and Processing-In-Memory Architecture</a></p>
                         <p class="authors">Hanbo Sun, Zhenhua Zhu, <strong>Chenyu Wang</strong>, Xuefei Ning, Guohao Dai, Huazhong Yang, Yu Wang</p>
-                        <p class="venue">IEEE Transactions on Computer-Aided Design of Integrated Circuits and Systems (TCAD), 2023. <a href="https://doi.org/10.1109/TCAD.2023.3262201" target="_blank" rel="noopener">[paper]</a></p>
+                        <p class="venue">IEEE Transactions on Computer-Aided Design of Integrated Circuits and Systems (TCAD), 2023. <a href="https://doi.org/10.1109/TCAD.2023.3262201" target="_blank" rel="noopener">paper</a></p>
                     </li>
                     <li>
                         <p class="paper-title"><a href="https://openreview.net/forum?id=PArJcOptzg" target="_blank" rel="noopener">DeepGuiser: Learning to Disguise Neural Architectures for Impeding Adversarial Transfer Attacks</a></p>
                         <p class="authors">Yi Cai*, <strong>Chenyu Wang*</strong>, Zixuan Zhou, Xuefei Ning, Huazhong Yang, Yu Wang</p>
-                        <p class="venue">Preprint, 2023. <a href="https://openreview.net/forum?id=PArJcOptzg" target="_blank" rel="noopener">[paper]</a></p>
+                        <p class="venue">Preprint, 2023. <a href="https://openreview.net/forum?id=PArJcOptzg" target="_blank" rel="noopener">paper</a></p>
                     </li>
                 </ol>
             </div>
@@ -143,7 +155,7 @@
                     <li>
                         <p class="paper-title"><a href="https://ieeexplore.ieee.org/document/9774605" target="_blank" rel="noopener">Gibbon: Efficient Co-Exploration of NN Model and Processing-In-Memory Architecture</a></p>
                         <p class="authors">Hanbo Sun*, <strong>Chenyu Wang*</strong>, Zhenhua Zhu, Xuefei Ning, Guohao Dai, Huazhong Yang, Yu Wang</p>
-                        <p class="venue">Design, Automation and Test in Europe Conference (DATE), 2022. <a href="https://ieeexplore.ieee.org/document/9774605" target="_blank" rel="noopener">[paper]</a></p>
+                        <p class="venue">Design, Automation and Test in Europe Conference (DATE), 2022. <a href="https://ieeexplore.ieee.org/document/9774605" target="_blank" rel="noopener">paper</a></p>
                     </li>
                 </ol>
             </div>
@@ -154,7 +166,7 @@
         <section class="section" id="service" aria-labelledby="service-title">
             <h2 id="service-title">Professional Service</h2>
             <ul class="compact-list">
-                <li>Reviewer: NeurIPS, ICML, and COLM.</li>
+                <li>Reviewer: ICLR, NeurIPS, ICML, and COLM.</li>
                 <li>Organizing team, Architecture 2.0 Workshop on AI for Computing Systems Design, ISCA 2026.</li>
             </ul>
         </section>
@@ -162,7 +174,7 @@
     </main>
 
     <footer class="page-width">
-        <p>Last updated August 2026 · © 2026 Chenyu Wang</p>
+        <p>Last updated November 2026 · © 2026 Chenyu Wang</p>
     </footer>
 </body>
 </html>
