@@ -10,3 +10,6 @@ secrets/
 git-push.sh
 run-push.sh
 PUSHING.md
+
+# Local tools (not part of the site)
+cloudflared

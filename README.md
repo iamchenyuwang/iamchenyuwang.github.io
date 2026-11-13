@@ -1,14 +1,13 @@
 # Chenyu Wang — Academic Website
 
 A static, single-page academic website. The homepage contains the research profile,
-news, publications, education, teaching, and community work in one dense reading flow.
+news, publications, and professional service in one reading flow.
 
 ## Structure
 
 ```text
 index.html          # Main academic profile and publication record
 home.css            # Homepage layout and responsive styles
-home.js             # Mobile navigation and active-section behavior
 assets/             # Profile image, PDFs, and other static files
 ```
 
