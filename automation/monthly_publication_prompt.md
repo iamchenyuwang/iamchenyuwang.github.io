@@ -34,7 +34,11 @@ output of an author-name search or a repository script as proof.
   has since been accepted or published at a new venue (for example, an arXiv
   comment such as "NeurIPS 2026" or an official accepted-papers list). When a
   primary source confirms it, update that entry's venue line and add a dated
-  News item in the existing style.
+  News item in the existing style. Only do this when Chenyu appears in the
+  author list of that published version; large or evolving author lists can
+  differ between arXiv and the venue. For example, Chenyu is an author of
+  Humanity's Last Exam only from arXiv v11 onward, not of the Nature (2026)
+  version, so keep that entry as an arXiv preprint.
 - If there is no high-confidence missing paper or venue update, do not modify
   any files and do not create a commit.
 - If there is a high-confidence missing paper or venue update, edit only the
