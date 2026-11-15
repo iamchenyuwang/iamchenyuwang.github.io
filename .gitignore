@@ -16,3 +16,6 @@ cloudflared
 
 # Original photos kept locally; only the cropped, metadata-free copy is published
 /微信图片_*
+
+# Local audit logs and lock file
+logs/
