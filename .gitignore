@@ -13,3 +13,6 @@ PUSHING.md
 
 # Local tools (not part of the site)
 cloudflared
+
+# Original photos kept locally; only the cropped, metadata-free copy is published
+/微信图片_*

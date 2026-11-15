@@ -35,14 +35,24 @@ There is no build step. GitHub Pages can serve the repository directly.
 A local monthly cron job starts a fresh Codex review using
 `scripts/run_monthly_publication_agent.sh`. The agent searches current primary
 sources, checks each candidate against Chenyu's research identity and established
-collaborators, and only then updates and pushes the homepage. The durable review
-instructions live in `automation/monthly_publication_prompt.md`; run logs are
-written to the ignored `logs/monthly-publications/` directory.
+collaborators, and may edit the News and Publications sections of a throwaway
+copy of the site. The durable review instructions live in
+`automation/monthly_publication_prompt.md`; run logs are written to the ignored
+`logs/monthly-publications/` directory.
 
-To run the same review manually:
+Because the agent reads untrusted web content, it runs in a transient systemd
+sandbox that sees only that copy, its Codex login, and the network: no other
+projects, SSH keys, GitHub tokens, host sockets, or root capabilities. The
+wrapper script, not the agent, then checks the edit with
+`scripts/validate_publication_diff.py` (only News and Publications may change,
+using the existing markup and HTTPS links) before it commits, pushes, and
+confirms the live page.
+
+To run the same review manually, or without publishing:
 
 ```bash
 ./scripts/run_monthly_publication_agent.sh
+./scripts/run_monthly_publication_agent.sh --dry-run
 ```
 
 To install or refresh the server schedule (first day of every month at 14:17
